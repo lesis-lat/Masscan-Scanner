@@ -1,0 +1,7 @@
+lib/Masscan/Scanner.pm
+LICENSE
+Makefile.PL
+MANIFEST			This list of files
+Masscan-Scanner-0.02/META.json
+Masscan-Scanner-0.02/META.yml
+README.md
