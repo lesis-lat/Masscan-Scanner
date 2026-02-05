@@ -22,36 +22,30 @@ use Try::Catch;
 use Data::Dumper;
 use namespace::autoclean;
 
-# ABSTRACT: A Perl module which helps in using the masscan port scanner.
-
 our $VERSION = '0.02';
 
-has hosts =>
-(
+has hosts => (
     is       => 'rw',
     isa      => ArrayRef,
     required => 0,
-    default  => sub{[]},
+    default  => sub { [] },
 );
 
-has ports =>
-(
+has ports => (
     is       => 'rw',
     isa      => ArrayRef,
     required => 0,
-    default  => sub{[]},
+    default  => sub { [] },
 );
 
-has arguments =>
-(
+has arguments => (
     is       => 'rw',
     isa      => ArrayRef,
     required => 0,
-    default  => sub{[]},
+    default  => sub { [] },
 );
 
-has binary =>
-(
+has binary => (
     is       => 'rw',
     isa      => Str,
     required => 0,
@@ -59,15 +53,13 @@ has binary =>
     lazy     => 1,
 );
 
-has command_line =>
-(
+has command_line => (
     is       => 'rw',
     isa      => Str,
     required => 0,
 );
 
-has scan_results_file =>
-(
+has scan_results_file => (
     is       => 'rw',
     isa      => Str,
     required => 0,
@@ -75,24 +67,21 @@ has scan_results_file =>
     lazy     => 1,
 );
 
-has sudo =>
-(
+has sudo => (
     is       => 'rw',
     isa      => Int,
     required => 0,
     default  => 0,
 );
 
-has verbose =>
-(
+has verbose => (
     is       => 'rw',
     isa      => Int,
     required => 0,
     default  => 0,
 );
 
-has logger =>
-(
+has logger => (
     is       => 'ro',
     isa      => Object,
     required => 0,
@@ -100,56 +89,67 @@ has logger =>
     lazy     => 1,
 );
 
-has name_servers =>
-(
+has name_servers => (
     is       => 'rw',
     isa      => ArrayRef,
     required => 0,
     builder  => 1,
 );
 
-sub add_host
-{
-    my $self = shift;
-    my $host = shift;
+sub add_host {
+    my ($self, $host) = @_;
 
-    return ($self -> _is_valid_host($host)) ? push($self -> hosts -> @*, $host) : 0;
+    if (!$self -> _is_valid_host($host)) {
+        return 0;
+    }
+
+    return push($self -> hosts -> @*, $host);
 }
 
-sub add_port
-{
-    my $self = shift;
-    my $port = shift;
+sub add_port {
+    my ($self, $port) = @_;
 
-    return ($self -> _is_valid_port($port)) ? push($self -> ports -> @*, $port) : 0;
+    if (!$self -> _is_valid_port($port)) {
+        return 0;
+    }
+
+    return push($self -> ports -> @*, $port);
 }
 
-sub add_argument
-{
-    my $self = shift;
-    my $arg  = shift;
+sub add_argument {
+    my ($self, $arg) = @_;
 
     return push($self -> arguments -> @*, $arg);
 }
 
-sub scan
-{
-    my $self   = shift;
+sub scan {
+    my ($self) = @_;
     my $binary = $self -> binary;
-    my $hosts  = $self -> _aref_to_str($self -> _hosts_to_ips($self -> hosts), 'hosts');
+    my $hosts  = $self -> _aref_to_str(
+        $self -> _hosts_to_ips($self -> hosts),
+        'hosts'
+    );
     my $ports  = $self -> _aref_to_str($self -> ports, 'ports');
     my $fstore = $self -> scan_results_file;
-    my $args   = $self -> _aref_to_str($self -> arguments, 'args') || '';
-    my $sudo   = ($self -> sudo) ? $self -> _build_binary('sudo') : '';
-    my $cmd    = "$sudo $binary $args -p $ports $hosts";
+    my $args   = $self -> _aref_to_str($self -> arguments, 'args');
+    my $sudo   = '';
+
+    if (!$args) {
+        $args = '';
+    }
+
+    if ($self -> sudo) {
+        $sudo = $self -> _build_binary('sudo');
+    }
+
+    my $cmd = "$sudo $binary $args -p $ports $hosts";
 
     $self -> logger -> info('Starting masscan');
     $self -> logger -> debug("Command: $cmd");
 
     $self -> command_line($cmd);
 
-    if (!$binary || $binary !~ m{masscan$}xmi)
-    {
+    if (!$binary || $binary !~ m{masscan$}xmi) {
         $self -> logger -> fatal('masscan not found');
         croak;
     }
@@ -157,136 +157,118 @@ sub scan
     $self -> logger -> info('Attempting to run command');
     my $scan = $self -> _run_cmd($cmd . " -oJ $fstore");
 
-    if ($scan -> {success})
-    {
+    if ($scan -> {success}) {
         $self -> logger -> info('Command executed successfully');
     }
-    else
-    {
-        $self -> logger -> error("Command has failed: $scan -> {stderr} " . 'Ensure root or sudo permissions');
+
+    if (!$scan -> {success}) {
+        $self -> logger -> error(
+            "Command has failed: $scan -> {stderr} "
+                . 'Ensure root or sudo permissions'
+        );
     }
 
-    return ($scan -> {success}) ? 1 : 0;
+    if ($scan -> {success}) {
+        return 1;
+    }
+
+    return 0;
 }
 
-sub scan_results
-{
-    my $self = shift;
+sub scan_results {
+    my ($self) = @_;
     my $cmd  = $self -> command_line;
-    my $sres = $self -> _from_json($self -> _slurp_file($self -> scan_results_file));
+    my $sres = $self -> _from_json(
+        $self -> _slurp_file($self -> scan_results_file)
+    );
     my %up_hosts;
 
-    if (!$sres)
-    {
-        $self -> logger -> warn("No results");
+    if (!$sres) {
+        $self -> logger -> warn('No results');
+        $sres = [];
     }
 
-    for my $result ($sres -> @*)
-    {
+    for my $result ($sres -> @*) {
         $up_hosts{$result -> {ip}} = 1;
     }
+
     $self -> logger -> info('Collating scan results');
 
     return {
-                masscan      => {
-                                    command_line => $cmd,
-                                    scan_stats   => {
-                                                        total_hosts => scalar($self -> hosts -> @*),
-                                                        up_hosts    => scalar(keys %up_hosts),
-                                                    },
-                                },
-                scan_results => $sres,
-           }
+        masscan      => {
+            command_line => $cmd,
+            scan_stats   => {
+                total_hosts => scalar($self -> hosts -> @*),
+                up_hosts    => scalar(keys %up_hosts),
+            },
+        },
+        scan_results => $sres,
+    };
 }
 
-# internal method _run_cmd
-# Runs a system command and slurps up the results.
-#
-# Returns hashref containing STDOUT, STDERR and if
-# the command ran successfully.
-sub _run_cmd
-{
-    my $self = shift;
-    my $cmd  = shift;
+sub _run_cmd {
+    my ($self, $cmd) = @_;
 
     my ($stdin, $stdout, $stderr);
     $stderr = gensym;
     my $pid = open3($stdin, $stdout, $stderr, $cmd);
     waitpid($pid, 0);
 
+    my $success = 0;
+    if (($? >> 8) == 0) {
+        $success = 1;
+    }
+
     return {
-                stdout  => $self -> _slurp($stdout),
-                stderr  => $self -> _slurp($stderr),
-                success => (($? >> 8) == 0) ? 1 : 0,
-           }
+        stdout  => $self -> _slurp($stdout),
+        stderr  => $self -> _slurp($stderr),
+        success => $success,
+    };
 }
 
-# internal method _slurp_file
-# Given a path to a file this will read the entire contents of said file into
-# memory.
-#
-# Returns entire content of file as a Str.
-sub _slurp_file
-{
-    my $self = shift;
-    my $path = shift;
+sub _slurp_file {
+    my ($self, $path) = @_;
 
     $self -> logger -> debug("Slurping up file: $path");
 
-    try
-    {
+    try {
         open(my $fh, '<', $path) || croak("Unable to open $path: $!");
         my $data = $self -> _slurp($fh);
         close($fh);
 
         return $data;
     }
-    catch
-    {
-        $self -> logger -> warn("$!. " . 'Most likely scan was not successful.');
+    catch {
+        $self -> logger -> warn(
+            "$!. " . 'Most likely scan was not successful.'
+        );
         return;
     }
 }
 
-# internal method _slurp
-# Given a glob we'll slurp that all up into memory.
-#
-# Returns entire content as a Str.
-sub _slurp
-{
-    my $self = shift;
-    my $glob = shift;
+sub _slurp {
+    my ($self, $glob) = @_;
 
     local $/ = undef;
     return scalar <$glob>;
 }
 
-# internal method _hosts_to_ips
-# Ensures sanity of host list & resolves domain names to their IP addresses.
-#
-# Returns ArrayRef of valid Ip(s) which will be accepted by masscan.
-sub _hosts_to_ips
-{
-    my $self  = shift;
-    my $hosts = shift;
+sub _hosts_to_ips {
+    my ($self, $hosts) = @_;
     my @sane_hosts;
 
-    for my $host ($hosts -> @*)
-    {
+    for my $host ($hosts -> @*) {
         $self -> logger -> info("Checking $host sanity");
 
-        if ($self -> _is_valid_host($host))
-        {
-            if (is_domain($host))
-            {
+        if ($self -> _is_valid_host($host)) {
+            if (is_domain($host)) {
                 my $ips = $self -> _resolve_dns($host);
-                for my $ip ($ips -> @*)
-                {
+                for my $ip ($ips -> @*) {
                     push(@sane_hosts, $ip);
                 }
             }
-            else
-            {
+
+            if (!is_domain($host)) {
                 push(@sane_hosts, $host);
                 $self -> logger -> info("Added $host to scan list");
             }
@@ -296,238 +278,194 @@ sub _hosts_to_ips
     return \@sane_hosts;
 }
 
-# internal method _is_valid_host
-# Checks if a provided host is indeed a valid IP || domain.
-#
-# Returns True or False.
-sub _is_valid_host
-{
-    my $self = shift;
-    my $host = shift || 0;
-    my $test = $host;
+sub _is_valid_host {
+    my ($self, $host) = @_;
+    my $target = $host || 0;
 
-    $test =~ s/\/.*$//g;
+    $target =~ s/\/.*$//g;
 
-    if (is_ipv4($test) || is_ipv6($test) || is_domain($test))
-    {
-        $self -> logger -> debug("$host is a valid IP address or domain name");
+    if (is_ipv4($target) || is_ipv6($target) || is_domain($target)) {
+        $self -> logger -> debug(
+            "$host is a valid IP address or domain name"
+        );
         return 1;
     }
 
-    $self -> logger -> warn("$host is not a valid IP address or domain name");
+    $self -> logger -> warn(
+        "$host is not a valid IP address or domain name"
+    );
     return 0;
 }
 
-# internal method _is_valid_port
-# Checks if a provided is valid in terms of what masscan will accept. This can
-# look like a single port Int like "80" or a port range like "1-80".
-#
-# Returns True or False.
-sub _is_valid_port
-{
-    my $self = shift;
-    my $port = shift || 0;
+sub _is_valid_port {
+    my ($self, $port) = @_;
+    my $target = $port || 0;
 
-    if ($port =~ m{^\d+$}xm || $port =~ m{^\d+-\d+$}xm)
-    {
-        $self -> logger -> debug("$port is valid port number or port range");
+    if ($target =~ m{^\d+$}xm || $target =~ m{^\d+-\d+$}xm) {
+        $self -> logger -> debug(
+            "$port is valid port number or port range"
+        );
         return 1;
     }
 
-    $self -> logger -> warn("$port is not valid port number or port range");
+    $self -> logger -> warn(
+        "$port is not valid port number or port range"
+    );
     return 0;
 }
 
-# internal method _aref_to_str
-# When this module is invoked the hosts and ports to be scanned are provided as
-# an ArrayRef. This method takes the array and converts it into a valid Str
-# Which will be accepted by masscan.
-#
-# Returns Str
-sub _aref_to_str
-{
-    my $self = shift;
-    my $aref = shift;
-    my $type = shift;
-    my $str;
+sub _aref_to_str {
+    my ($self, $aref, $type) = @_;
+    my $str = '';
 
     $self -> logger -> info("Converting $type ArrayRef to masscan cli format");
 
-    if ($type eq 'hosts')
-    {
-        for my $host ($aref -> @*)
-        {
-            $str .= ($self -> _is_valid_host($host)) ? $host . ',' : '';
+    if ($type eq 'hosts') {
+        my @hosts;
+        for my $host ($aref -> @*) {
+            if ($self -> _is_valid_host($host)) {
+                push(@hosts, $host);
+            }
         }
+        return join(',', @hosts);
     }
-    elsif ($type eq 'ports')
-    {
-        for my $port ($aref -> @*)
-        {
-            $str .= ($self -> _is_valid_port($port)) ? $port . ',' : '';
+
+    if ($type eq 'ports') {
+        my @ports;
+        for my $port ($aref -> @*) {
+            if ($self -> _is_valid_port($port)) {
+                push(@ports, $port);
+            }
         }
+        return join(',', @ports);
     }
-    elsif ($type eq 'args')
-    {
-        for my $arg ($aref -> @*)
-        {
+
+    if ($type eq 'args') {
+        for my $arg ($aref -> @*) {
             $str .= $arg . ' ';
         }
+        $str =~ s/\s+$//;
+        return $str;
     }
-
-    $str =~ s/,$//g;
-    $str =~ s/\s+$//g;
-
-    $self -> logger -> debug("ArrayRef to masscan cli format: $str");
 
     return $str;
 }
 
-# internal method _from_json
-# Does what it implies. Will convert JSON format into a Perl data structure.
-#
-# Returns Perl data structure.
-sub _from_json
-{
-    my $self = shift;
-    my $data = shift;
+sub _from_json {
+    my ($self, $json) = @_;
 
-    try
-    {
-        my $json = JSON -> new -> utf8 -> space_after -> allow_nonref -> convert_blessed -> relaxed(1);
-        $self -> logger -> info('Converting results from JSON to Perl data structure');
-
-        return $json -> decode($data);
+    if (!$json) {
+        return [];
     }
-    catch
-    {
+
+    try {
+        my $data = decode_json($json);
+        return $data;
+    }
+    catch {
+        $self -> logger -> warn('Unable to parse scan results JSON');
         return [];
     }
 }
 
-# internal method _resolve_dns
-# Given a domain name this method will attempt to resolve the name to it's
-# IP(s).
-#
-# Returns ArrayRef of IP(s).
-sub _resolve_dns
-{
-    my $self = shift;
-    my $name = shift;
+sub _resolve_dns {
+    my ($self, $domain) = @_;
+    my $resolver = Net::DNS::Resolver -> new;
     my @ips;
 
-    $self -> logger -> info("Getting IP address for $name");
-
-    try
-    {
-        my $resolver = Net::DNS::Resolver -> new();
-        $resolver -> retry(3);
-        $resolver -> tcp_timeout(4);
-        $resolver -> udp_timeout(4);
+    if ($self -> name_servers) {
         $resolver -> nameservers($self -> name_servers -> @*);
-        my $res = $resolver -> search($name, 'A');
+    }
 
-        for my $answer ($res -> answer)
-        {
-            for my $ip ($answer -> address)
-            {
-                if ($answer -> can('address'))
-                {
-                    push(@ips, $ip);
+    if ($domain) {
+        my $query = $resolver -> search($domain);
+        if ($query) {
+            for my $answer ($query -> answer) {
+                if ($answer -> type eq 'A') {
+                    push(@ips, $answer -> address);
+                }
+
+                if ($answer -> type eq 'AAAA') {
+                    push(@ips, $answer -> address);
                 }
             }
         }
+
+        if (!$query) {
+            return [];
+        }
     }
-    catch
-    {
-        $self -> logger -> warn("Could not get IP(s) for $name");
+
+    if (!@ips) {
         return [];
-    };
+    }
 
     return \@ips;
 }
 
-# internal method _build_namer_servers
-# The default public name servers we'll be using
-#
-# Returns ArrayRef of IPs.
-sub _build_name_servers
-{
-    my $self = shift;
+sub _build_name_servers {
+    my ($self) = @_;
+
     return [
-                '1.1.1.1',
-                '2606:4700:4700::1111',
-                '1.0.0.1',
-                '2606:4700:4700::1001',
-                '8.8.8.8',
-                '2001:4860:4860::8888',
-                '8.8.4.4',
-                '2001:4860:4860::8844'
-            ];
+        '1.1.1.1',
+        '2606:4700:4700::1111',
+        '1.0.0.1',
+        '2606:4700:4700::1001',
+        '8.8.8.8',
+        '2001:4860:4860::8888',
+        '8.8.4.4',
+        '2001:4860:4860::8844'
+    ];
 }
 
-# internal method _tmp_file
-# Generates a tempoary file where results can be stored.
-#
-# Returns full path to temp file.
-sub _build_scan_results_file
-{
-    my $self = shift;
-    my $fh   = File::Temp -> new();
+sub _build_scan_results_file {
+    my ($self) = @_;
+    my $handle = File::Temp -> new();
 
-    return $fh -> filename;
+    return $handle -> filename;
 }
 
-# internal method _build_binary
-# If masscan is within the users path then we should be able to find it.
-#
-# Returns full path to binary file.
-sub _build_binary
-{
-    my $self   = shift;
-    my $binary = shift || 'masscan';
+sub _build_binary {
+    my ($self, $binary) = @_;
 
-    my $sep = ($^O =~ /Win/) ? ';' : ':';
+    if (!$binary) {
+        $binary = 'masscan';
+    }
 
-    for my $dir (split($sep, $ENV{'PATH'}))
-    {
+    my $sep = ':';
+    if ($^O =~ /Win/) {
+        $sep = ';';
+    }
+
+    for my $dir (split($sep, $ENV{PATH})) {
         opendir(my $dh, $dir) || next;
         my @files = (readdir($dh));
         closedir($dh);
 
-        my $path;
-
-        for my $file (@files)
-        {
+        for my $file (@files) {
             next unless $file =~ m{^$binary(?:.exe)?$};
-            $path = File::Spec -> catfile($dir, $file);
+            my $path = File::Spec -> catfile($dir, $file);
             next unless -r $path && (-x _ || -l _);
             return $path;
         }
     }
 }
 
-# internal method _build_logger
-# Sets up logging.
-#
-# Returns logger Object.
-sub _build_logger
-{
-    my $self = shift;
-    my $conf = ($self -> verbose) ? _build_log_conf('DEBUG') : _build_log_conf('WARN');
+sub _build_logger {
+    my ($self) = @_;
+    my $conf = _build_log_conf('WARN');
+
+    if ($self -> verbose) {
+        $conf = _build_log_conf('DEBUG');
+    }
 
     Log::Log4perl -> init(\$conf);
 
     return Log::Log4perl -> get_logger(__PACKAGE__);
 }
 
-# internal method _build_log_conf
-# Our log settings.
-#
-# Returns Str with log config.
-sub _build_log_conf
-{
-    my $level = shift;
+sub _build_log_conf {
+    my ($level) = @_;
 
     return <<~__LOG_CONF__
 log4perl.logger                         = TRACE, Screen
@@ -570,58 +508,38 @@ version 20200329.150259
     my @ports     = qw(22 80 443 1-100);
     my @arguments = qw(--banners);
 
-    my $mas = Masscan::Scanner -> new(hosts => \@hosts, ports => \@ports, arguments => \@arguments);
+    my $mas = Masscan::Scanner -> new(
+        hosts     => \@hosts,
+        ports     => \@ports,
+        arguments => \@arguments
+    );
 
-    # Add extra hosts or ports
     $mas -> add_host('10.0.0.1');
     $mas -> add_host('10.0.0.0/24');
     $mas -> add_port(25);
     $mas -> add_port(110);
 
-    # Can add port ranges too
     $mas -> add_port('1024-2048');
     $mas -> add_port('3000-65535');
 
-    # Can add domains but will incur a performance penalty hence IP(s) and CIDR(s) recommended.
-    # When a domain is added to the list of hosts to be scanned this module will attempt to
-    # resolve all of the A records for the domain name provided and then add the IP(s) to the
-    # scan list.
     $mas -> add_host('averna.id.au');
     $mas -> add_host('duckduckgo.com');
 
-    # It is usually required that masscan is run as a privilaged user.
-    # Obviously this module can be successfully run as the root user.
-    # However, if this is being run by an unprivilaged user then sudo can be enabled.
-    #
-    # PLEASE NOTE: This module assumes the user can run the masscan command without
-    # providing their password. Usually this is achieved by permitting the user to
-    # run masscan within the /etc/sudoers file like so:a
-    #
-    # In /etc/sudoers: user averna = (root) NOPASSWD: /usr/bin/masscan
     $mas -> sudo(1);
 
-    # Turn on verbose mode
-    # Default is off
     $mas -> verbose(1);
 
-    # Add extra masscan arguments
     $mas -> add_argument('--rate 100000');
 
-    # Set the full path to masscan binary
-    # Default is the module will automatically find the binary full path if it's
-    # withing the users environment path.
     $mas -> binary('/usr/bin/masscan');
 
-    # Set the name servers to be used for DNS resolution
-    # Default is to use a list of public DNS servers.
     $mas -> name_servers(['192.168.0.100', '192.168.0.101']);
 
-    # Will initiate the masscan.
-    # If the scan is successful returns True otherwise returns False.
     my $scan = $mas -> scan;
-
-    # Returns the scan results
-    my $res = $mas -> scan_results if ($scan);
+    my $res;
+    if ($scan) {
+        $res = $mas -> scan_results;
+    }
 
 =head1 METHODS
 
@@ -644,7 +562,10 @@ version 20200329.150259
 
     This method allows the addition of masscan command line arguments.
 
-    my $mas = Masscan::Scanner -> new(hosts => ['127.0.0.1', '10.0.0.1'], ports => [80. 443]);
+    my $mas = Masscan::Scanner -> new(
+        hosts => ['127.0.0.1', '10.0.0.1'],
+        ports => [80, 443]
+    );
     $mas -> add_argument('--banners');
     $mas -> add_argument('--rate 100000');
 
@@ -671,8 +592,7 @@ version 20200329.150259
 
     my $scan = $mas -> scan;
 
-    if ($scan)
-    {
+    if ($scan) {
         my $res = $mas -> scan_results;
     }
 
