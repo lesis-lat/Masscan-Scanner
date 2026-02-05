@@ -321,21 +321,23 @@ sub _aref_to_str {
     $self -> logger -> info("Converting $type ArrayRef to masscan cli format");
 
     if ($type eq 'hosts') {
+        my @hosts;
         for my $host ($aref -> @*) {
             if ($self -> _is_valid_host($host)) {
-                $str .= $host . ',';
+                push(@hosts, $host);
             }
         }
-        return $str;
+        return join(',', @hosts);
     }
 
     if ($type eq 'ports') {
+        my @ports;
         for my $port ($aref -> @*) {
             if ($self -> _is_valid_port($port)) {
-                $str .= $port . ',';
+                push(@ports, $port);
             }
         }
-        return $str;
+        return join(',', @ports);
     }
 
     if ($type eq 'args') {
