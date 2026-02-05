@@ -355,11 +355,17 @@ sub _from_json {
     my ($self, $json) = @_;
 
     if (!$json) {
-        return;
+        return [];
     }
 
-    my $data = decode_json($json);
-    return $data;
+    try {
+        my $data = decode_json($json);
+        return $data;
+    }
+    catch {
+        $self -> logger -> warn('Unable to parse scan results JSON');
+        return [];
+    }
 }
 
 sub _resolve_dns {
