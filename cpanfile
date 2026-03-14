@@ -10,7 +10,7 @@ requires 'Moose';
 requires 'MooseX::AttributeShortcuts', '0.037';
 requires 'MooseX::StrictConstructor';
 requires 'MooseX::Types::Moose';
-requires 'MooseX::Types::Structured';
+requires 'MooseX::Types::Structured', '0.36';
 requires 'namespace::autoclean';
 requires 'Net::DNS';
 requires 'Try::Catch';
