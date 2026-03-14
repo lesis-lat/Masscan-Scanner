@@ -1,6 +1,6 @@
 requires 'perl', '5.020000';
 
-requires 'Data::Validate::Domain';
+requires 'Data::Validate::Domain', '0.15';
 requires 'Data::Validate::IP';
 requires 'JSON';
 requires 'Log::Log4perl';
