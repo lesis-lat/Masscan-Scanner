@@ -1,4 +1,4 @@
-lib/Masscan/Scanner.pm
+lib/Masscan/Client.pm
 LICENSE
 Makefile.PL
 cpanfile

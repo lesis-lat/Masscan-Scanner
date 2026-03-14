@@ -2,11 +2,11 @@ use strict;
 use warnings;
 use ExtUtils::MakeMaker;
 
-our $VERSION = '0.03';
+our $VERSION = '0.01';
 
 WriteMakefile(
-    NAME         => 'Masscan::Scanner',
-    VERSION_FROM => 'lib/Masscan/Scanner.pm',
+    NAME         => 'Masscan::Client',
+    VERSION_FROM => 'lib/Masscan/Client.pm',
     ABSTRACT     => 'Perl bindings for masscan scanning',
     AUTHOR       => 'Heitor Gouvea <hgouvea@cpan.org>',
     LICENSE      => 'perl',

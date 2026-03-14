@@ -1,4 +1,4 @@
-# This Makefile is for the Masscan::Scanner extension to perl.
+# This Makefile is for the Masscan::Client extension to perl.
 #
 # It was generated automatically by MakeMaker version
 # 7.62 (Revision: 76200) from the contents of
@@ -16,10 +16,10 @@
 #     BUILD_REQUIRES => {  }
 #     CONFIGURE_REQUIRES => {  }
 #     LICENSE => q[perl]
-#     NAME => q[Masscan::Scanner]
+#     NAME => q[Masscan::Client]
 #     PREREQ_PM => { JSON=>q[0], Moose=>q[0], MooseX::AttributeShortcuts=>q[0], MooseX::StrictConstructor=>q[0], MooseX::Types::Moose=>q[0], MooseX::Types::Structured=>q[0], Net::DNS=>q[0] }
 #     TEST_REQUIRES => {  }
-#     VERSION_FROM => q[lib/Masscan/Scanner.pm]
+#     VERSION_FROM => q[lib/Masscan/Client.pm]
 
 # --- MakeMaker post_initialize section:
 
@@ -56,13 +56,13 @@ VENDORLIBEXP = /Network/Library/Perl/5.34
 AR_STATIC_ARGS = cr
 DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
-NAME = Masscan::Scanner
-NAME_SYM = Masscan_Scanner
-VERSION = 0.03
+NAME = Masscan::Client
+NAME_SYM = Masscan_Client
+VERSION = 0.01
 VERSION_MACRO = VERSION
-VERSION_SYM = 0_03
+VERSION_SYM = 0_01
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 0.03
+XS_VERSION = 0.01
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -148,11 +148,11 @@ MM_REVISION = 76200
 # PARENT_NAME = NAME without BASEEXT and no trailing :: (eg Foo::Bar)
 # DLBASE  = Basename part of dynamic library. May be just equal BASEEXT.
 MAKE = make
-FULLEXT = Masscan/Scanner
-BASEEXT = Scanner
+FULLEXT = Masscan/Client
+BASEEXT = Client
 PARENT_NAME = Masscan
 DLBASE = $(BASEEXT)
-VERSION_FROM = lib/Masscan/Scanner.pm
+VERSION_FROM = lib/Masscan/Client.pm
 OBJECT = 
 LDFROM = $(OBJECT)
 LINKTYPE = dynamic
@@ -164,7 +164,7 @@ C_FILES  =
 O_FILES  = 
 H_FILES  = 
 MAN1PODS = 
-MAN3PODS = lib/Masscan/Scanner.pm
+MAN3PODS = lib/Masscan/Client.pm
 
 SDKROOT := $(shell xcrun --show-sdk-path)
 PERL_SYSROOT = $(SDKROOT)
@@ -190,7 +190,7 @@ PERL_ARCHIVEDEP    =
 PERL_ARCHIVE_AFTER = 
 
 
-TO_INST_PM = lib/Masscan/Scanner.pm
+TO_INST_PM = lib/Masscan/Client.pm
 
 
 # --- MakeMaker platform_constants section:
@@ -259,8 +259,8 @@ CI = ci -u
 RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
-DISTNAME = Masscan-Scanner
-DISTVNAME = Masscan-Scanner-0.03
+DISTNAME = Masscan-Client
+DISTVNAME = Masscan-Client-0.01
 
 
 # --- MakeMaker macro section:
@@ -415,9 +415,9 @@ POD2MAN = $(POD2MAN_EXE)
 
 
 manifypods : pure_all config  \
-	lib/Masscan/Scanner.pm
+	lib/Masscan/Client.pm
 	$(NOECHO) $(POD2MAN) --section=$(MAN3SECTION) --perm_rw=$(PERM_RW) -u \
-	  lib/Masscan/Scanner.pm $(INST_MAN3DIR)/Masscan::Scanner.$(MAN3EXT) 
+	  lib/Masscan/Client.pm $(INST_MAN3DIR)/Masscan::Client.$(MAN3EXT) 
 
 
 
@@ -498,7 +498,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) 'meta-spec:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  url: http://module-build.sourceforge.net/META-spec-v1.4.html' >> META_new.yml
 	$(NOECHO) $(ECHO) '  version: '\''1.4'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) 'name: Masscan-Scanner' >> META_new.yml
+	$(NOECHO) $(ECHO) 'name: Masscan-Client' >> META_new.yml
 	$(NOECHO) $(ECHO) 'no_index:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  directory:' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - t' >> META_new.yml
@@ -511,7 +511,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '  MooseX::Types::Moose: '\''0'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) '  MooseX::Types::Structured: '\''0'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Net::DNS: '\''0'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version: '\''0.03'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version: '\''0.01'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'x_serialization_backend: '\''CPAN::Meta::YAML version 0.018'\''' >> META_new.yml
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
 	$(NOECHO) $(ECHO) Generating META.json
@@ -529,7 +529,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",' >> META_new.json
 	$(NOECHO) $(ECHO) '      "version" : 2' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
-	$(NOECHO) $(ECHO) '   "name" : "Masscan-Scanner",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "name" : "Masscan-Client",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "no_index" : {' >> META_new.json
 	$(NOECHO) $(ECHO) '      "directory" : [' >> META_new.json
 	$(NOECHO) $(ECHO) '         "t",' >> META_new.json
@@ -560,7 +560,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
 	$(NOECHO) $(ECHO) '   "release_status" : "stable",' >> META_new.json
-	$(NOECHO) $(ECHO) '   "version" : "0.03",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "version" : "0.01",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "x_serialization_backend" : "JSON::PP version 4.06"' >> META_new.json
 	$(NOECHO) $(ECHO) '}' >> META_new.json
 	-$(NOECHO) $(MV) META_new.json $(DISTVNAME)/META.json
@@ -864,28 +864,28 @@ testdb_static test_static :: subdirs-test_static
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Masscan-Scanner" VERSION="0.03">' > Masscan-Scanner.ppd
-	$(NOECHO) $(ECHO) '    <ABSTRACT>Perl bindings for masscan scanning</ABSTRACT>' >> Masscan-Scanner.ppd
-	$(NOECHO) $(ECHO) '    <AUTHOR>Heitor Gouvea &lt;hgouvea@cpan.org&gt;</AUTHOR>' >> Masscan-Scanner.ppd
-	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> Masscan-Scanner.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="JSON::" />' >> Masscan-Scanner.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Moose::" />' >> Masscan-Scanner.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::AttributeShortcuts" />' >> Masscan-Scanner.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::StrictConstructor" />' >> Masscan-Scanner.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::Types::Moose" />' >> Masscan-Scanner.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::Types::Structured" />' >> Masscan-Scanner.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Net::DNS" />' >> Masscan-Scanner.ppd
-	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="darwin-thread-multi-2level-5.34" />' >> Masscan-Scanner.ppd
-	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> Masscan-Scanner.ppd
-	$(NOECHO) $(ECHO) '    </IMPLEMENTATION>' >> Masscan-Scanner.ppd
-	$(NOECHO) $(ECHO) '</SOFTPKG>' >> Masscan-Scanner.ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Masscan-Client" VERSION="0.01">' > Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '    <ABSTRACT>Perl bindings for masscan scanning</ABSTRACT>' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '    <AUTHOR>Heitor Gouvea &lt;hgouvea@cpan.org&gt;</AUTHOR>' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="JSON::" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Moose::" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::AttributeShortcuts" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::StrictConstructor" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::Types::Moose" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::Types::Structured" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Net::DNS" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="darwin-thread-multi-2level-5.34" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '    </IMPLEMENTATION>' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '</SOFTPKG>' >> Masscan-Client.ppd
 
 
 # --- MakeMaker pm_to_blib section:
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
-	  'lib/Masscan/Scanner.pm' 'blib/lib/Masscan/Scanner.pm' 
+	  'lib/Masscan/Client.pm' 'blib/lib/Masscan/Client.pm' 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
 

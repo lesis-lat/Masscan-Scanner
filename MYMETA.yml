@@ -12,7 +12,7 @@ license: perl
 meta-spec:
   url: http://module-build.sourceforge.net/META-spec-v1.4.html
   version: '1.4'
-name: Masscan-Scanner
+name: Masscan-Client
 no_index:
   directory:
     - t
@@ -25,5 +25,5 @@ requires:
   MooseX::Types::Moose: '0'
   MooseX::Types::Structured: '0'
   Net::DNS: '0'
-version: '0.03'
+version: '0.01'
 x_serialization_backend: 'CPAN::Meta::YAML version 0.018'

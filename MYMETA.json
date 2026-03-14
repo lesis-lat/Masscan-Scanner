@@ -12,7 +12,7 @@
       "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
       "version" : 2
    },
-   "name" : "Masscan-Scanner",
+   "name" : "Masscan-Client",
    "no_index" : {
       "directory" : [
          "t",
@@ -43,6 +43,6 @@
       }
    },
    "release_status" : "stable",
-   "version" : "0.03",
+   "version" : "0.01",
    "x_serialization_backend" : "JSON::PP version 4.06"
 }

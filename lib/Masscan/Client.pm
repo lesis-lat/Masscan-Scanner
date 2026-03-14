@@ -1,4 +1,4 @@
-package Masscan::Scanner;
+package Masscan::Client;
 use strict;
 use warnings;
 use 5.020;
@@ -24,7 +24,7 @@ use Try::Catch;
 use Data::Dumper;
 use namespace::autoclean;
 
-our $VERSION = '0.03';
+our $VERSION = '0.01';
 
 has hosts => (
     is       => 'rw',
@@ -519,21 +519,21 @@ __END__
 
 =head1 NAME
 
-Masscan::Scanner - A Perl module which helps in using the masscan port scanner.
+Masscan::Client - A Perl module which helps in using the masscan port scanner.
 
 =head1 VERSION
 
-version 20200329.150259
+version 0.01
 
 =head1 SYNOPSIS
 
-    use Masscan::Scanner;
+    use Masscan::Client;
 
     my @hosts     = qw(::1 127.0.0.1);
     my @ports     = qw(22 80 443 1-100);
     my @arguments = qw(--banners);
 
-    my $mas = Masscan::Scanner -> new(
+    my $mas = Masscan::Client -> new(
         hosts     => \@hosts,
         ports     => \@ports,
         arguments => \@arguments
@@ -568,7 +568,7 @@ version 20200329.150259
 
 =head1 DESCRIPTION
 
-Masscan::Scanner provides an object-oriented interface for building,
+Masscan::Client provides an object-oriented interface for building,
 running, and parsing masscan scans from Perl code.
 
 =head1 SUBROUTINES/METHODS
@@ -577,14 +577,14 @@ running, and parsing masscan scans from Perl code.
 
     This method allows the addition of a host to the host list to be scaned.
 
-    my $mas = Masscan::Scanner -> new();
+    my $mas = Masscan::Client -> new();
     $mas -> add_host('127.0.0.1');
 
 =head2 add_port
 
     This method allows the addition of a port or port range to the port list to be scaned.
 
-    my $mas = Masscan::Scanner -> new();
+    my $mas = Masscan::Client -> new();
     $mas -> add_port(443);
     $mas -> add_port('1-65535');
 
@@ -592,7 +592,7 @@ running, and parsing masscan scans from Perl code.
 
     This method allows the addition of masscan command line arguments.
 
-    my $mas = Masscan::Scanner -> new(
+    my $mas = Masscan::Client -> new(
         hosts => ['127.0.0.1', '10.0.0.1'],
         ports => [80, 443]
     );
@@ -604,7 +604,7 @@ running, and parsing masscan scans from Perl code.
     Will initiate the scan of what hosts & ports have been provided.
     Returns true fi the scan was successful otherwise returns false.
 
-    my $mas = Masscan::Scanner -> new();
+    my $mas = Masscan::Client -> new();
     $mas -> hosts(['127.0.0.1', '::1']);
     $mas -> ports(['22', '80', '443']);
     $mas -> add_port('1024');
@@ -615,7 +615,7 @@ running, and parsing masscan scans from Perl code.
 
     Returns the result of the masscan as a Perl data structure.
 
-    my $mas = Masscan::Scanner -> new();
+    my $mas = Masscan::Client -> new();
     $mas -> hosts(['127.0.0.1', '::1']);
     $mas -> ports(['22', '80', '443']);
     $mas -> add_port('1024');
