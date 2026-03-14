@@ -11,6 +11,6 @@ requires 'MooseX::AttributeShortcuts', '0.037';
 requires 'MooseX::StrictConstructor', '0.21';
 requires 'MooseX::Types::Moose', '0.51';
 requires 'MooseX::Types::Structured', '0.36';
-requires 'namespace::autoclean';
+requires 'namespace::autoclean', '0.31';
 requires 'Net::DNS';
 requires 'Try::Catch', 'v1.1.0';
