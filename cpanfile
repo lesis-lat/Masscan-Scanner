@@ -6,7 +6,7 @@ requires 'JSON', '4.10';
 requires 'Log::Log4perl', '1.57';
 requires 'Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors', '0.117';
 requires 'Log::Log4perl::Layout::PatternLayout::Multiline', '1.57';
-requires 'Moose';
+requires 'Moose', '2.4000';
 requires 'MooseX::AttributeShortcuts', '0.037';
 requires 'MooseX::StrictConstructor', '0.21';
 requires 'MooseX::Types::Moose';
