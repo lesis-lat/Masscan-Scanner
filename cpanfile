@@ -7,7 +7,7 @@ requires 'Log::Log4perl';
 requires 'Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors';
 requires 'Log::Log4perl::Layout::PatternLayout::Multiline';
 requires 'Moose';
-requires 'MooseX::AttributeShortcuts';
+requires 'MooseX::AttributeShortcuts', '0.037';
 requires 'MooseX::StrictConstructor';
 requires 'MooseX::Types::Moose';
 requires 'MooseX::Types::Structured';
