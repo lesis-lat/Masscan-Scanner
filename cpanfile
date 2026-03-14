@@ -3,7 +3,7 @@ requires 'perl', '5.020000';
 requires 'Data::Validate::Domain', '0.15';
 requires 'Data::Validate::IP';
 requires 'JSON', '4.10';
-requires 'Log::Log4perl';
+requires 'Log::Log4perl', '1.57';
 requires 'Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors', '0.117';
 requires 'Log::Log4perl::Layout::PatternLayout::Multiline';
 requires 'Moose';
