@@ -2,6 +2,8 @@ use strict;
 use warnings;
 use ExtUtils::MakeMaker;
 
+our $VERSION = '0.03';
+
 WriteMakefile(
     NAME         => 'Masscan::Scanner',
     VERSION_FROM => 'lib/Masscan/Scanner.pm',

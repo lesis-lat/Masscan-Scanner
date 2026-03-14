@@ -1,16 +1,18 @@
 package Masscan::Scanner;
 use strict;
 use warnings;
-use v5.20;
+use 5.020;
 use Moose;
 use MooseX::AttributeShortcuts;
 use MooseX::StrictConstructor;
 use MooseX::Types::Moose qw(:all);
 use MooseX::Types::Structured qw(:all);
 use Carp;
+use English qw(-no_match_vars);
 use File::Spec;
 use File::Temp;
 use IPC::Open3;
+use POSIX qw(WEXITSTATUS);
 use Symbol 'gensym';
 use JSON;
 use Net::DNS;
@@ -49,7 +51,7 @@ has binary => (
     is       => 'rw',
     isa      => Str,
     required => 0,
-    builder  => 1,
+    builder  => '_build_binary',
     lazy     => 1,
 );
 
@@ -63,7 +65,7 @@ has scan_results_file => (
     is       => 'rw',
     isa      => Str,
     required => 0,
-    builder  => 1,
+    builder  => 'build_scan_results_file',
     lazy     => 1,
 );
 
@@ -85,7 +87,7 @@ has logger => (
     is       => 'ro',
     isa      => Object,
     required => 0,
-    builder  => 1,
+    builder  => 'build_logger',
     lazy     => 1,
 );
 
@@ -93,7 +95,7 @@ has name_servers => (
     is       => 'rw',
     isa      => ArrayRef,
     required => 0,
-    builder  => 1,
+    builder  => 'build_name_servers',
 );
 
 sub add_host {
@@ -103,7 +105,7 @@ sub add_host {
         return 0;
     }
 
-    return push($self -> hosts -> @*, $host);
+    return push $self -> hosts -> @*, $host;
 }
 
 sub add_port {
@@ -113,13 +115,13 @@ sub add_port {
         return 0;
     }
 
-    return push($self -> ports -> @*, $port);
+    return push $self -> ports -> @*, $port;
 }
 
 sub add_argument {
     my ($self, $arg) = @_;
 
-    return push($self -> arguments -> @*, $arg);
+    return push $self -> arguments -> @*, $arg;
 }
 
 sub scan {
@@ -132,10 +134,10 @@ sub scan {
     my $ports  = $self -> _aref_to_str($self -> ports, 'ports');
     my $fstore = $self -> scan_results_file;
     my $args   = $self -> _aref_to_str($self -> arguments, 'args');
-    my $sudo   = '';
+    my $sudo   = q{};
 
     if (!$args) {
-        $args = '';
+        $args = q{};
     }
 
     if ($self -> sudo) {
@@ -149,7 +151,7 @@ sub scan {
 
     $self -> command_line($cmd);
 
-    if (!$binary || $binary !~ m{masscan$}xmi) {
+    if (!$binary || $binary !~ m{masscan$}xmsi) {
         $self -> logger -> fatal('masscan not found');
         croak;
     }
@@ -212,10 +214,10 @@ sub _run_cmd {
     my ($stdin, $stdout, $stderr);
     $stderr = gensym;
     my $pid = open3($stdin, $stdout, $stderr, $cmd);
-    waitpid($pid, 0);
+    my $waited_pid = waitpid $pid, 0;
 
     my $success = 0;
-    if (($? >> 8) == 0) {
+    if ($waited_pid == $pid && WEXITSTATUS($CHILD_ERROR) == 0) {
         $success = 1;
     }
 
@@ -228,28 +230,37 @@ sub _run_cmd {
 
 sub _slurp_file {
     my ($self, $path) = @_;
+    my $file_data;
+    my $file_read_succeeded = 0;
 
     $self -> logger -> debug("Slurping up file: $path");
 
     try {
-        open(my $fh, '<', $path) || croak("Unable to open $path: $!");
-        my $data = $self -> _slurp($fh);
-        close($fh);
-
-        return $data;
+        open(my $fh, '<', $path)
+            || croak("Unable to open $path: $ERRNO");
+        $file_data = $self -> _slurp($fh);
+        if (!close $fh) {
+            croak("Unable to close $path: $ERRNO");
+        }
+        $file_read_succeeded = 1;
     }
     catch {
         $self -> logger -> warn(
-            "$!. " . 'Most likely scan was not successful.'
+            "$ERRNO. " . 'Most likely scan was not successful.'
         );
-        return;
+    };
+
+    if ($file_read_succeeded) {
+        return $file_data;
     }
+
+    return;
 }
 
 sub _slurp {
     my ($self, $glob) = @_;
 
-    local $/ = undef;
+    local $INPUT_RECORD_SEPARATOR = undef;
     return scalar <$glob>;
 }
 
@@ -264,12 +275,12 @@ sub _hosts_to_ips {
             if (is_domain($host)) {
                 my $ips = $self -> _resolve_dns($host);
                 for my $ip ($ips -> @*) {
-                    push(@sane_hosts, $ip);
+                    push @sane_hosts, $ip;
                 }
             }
 
             if (!is_domain($host)) {
-                push(@sane_hosts, $host);
+                push @sane_hosts, $host;
                 $self -> logger -> info("Added $host to scan list");
             }
         }
@@ -282,7 +293,7 @@ sub _is_valid_host {
     my ($self, $host) = @_;
     my $target = $host || 0;
 
-    $target =~ s/\/.*$//g;
+    $target =~ s{\/.*$}{}xmsg;
 
     if (is_ipv4($target) || is_ipv6($target) || is_domain($target)) {
         $self -> logger -> debug(
@@ -301,7 +312,7 @@ sub _is_valid_port {
     my ($self, $port) = @_;
     my $target = $port || 0;
 
-    if ($target =~ m{^\d+$}xm || $target =~ m{^\d+-\d+$}xm) {
+    if ($target =~ m{^\d+$}xms || $target =~ m{^\d+-\d+$}xms) {
         $self -> logger -> debug(
             "$port is valid port number or port range"
         );
@@ -316,7 +327,7 @@ sub _is_valid_port {
 
 sub _aref_to_str {
     my ($self, $aref, $type) = @_;
-    my $str = '';
+    my $str = q{};
 
     $self -> logger -> info("Converting $type ArrayRef to masscan cli format");
 
@@ -324,27 +335,27 @@ sub _aref_to_str {
         my @hosts;
         for my $host ($aref -> @*) {
             if ($self -> _is_valid_host($host)) {
-                push(@hosts, $host);
+                    push @hosts, $host;
             }
         }
-        return join(',', @hosts);
+        return join q{,}, @hosts;
     }
 
     if ($type eq 'ports') {
         my @ports;
         for my $port ($aref -> @*) {
             if ($self -> _is_valid_port($port)) {
-                push(@ports, $port);
+                    push @ports, $port;
             }
         }
-        return join(',', @ports);
+        return join q{,}, @ports;
     }
 
     if ($type eq 'args') {
         for my $arg ($aref -> @*) {
-            $str .= $arg . ' ';
+            $str .= $arg . q{ };
         }
-        $str =~ s/\s+$//;
+        $str =~ s/\s+$//xms;
         return $str;
     }
 
@@ -353,19 +364,21 @@ sub _aref_to_str {
 
 sub _from_json {
     my ($self, $json) = @_;
+    my $decoded_data = [];
 
     if (!$json) {
         return [];
     }
 
     try {
-        my $data = decode_json($json);
-        return $data;
+        $decoded_data = decode_json($json);
     }
     catch {
         $self -> logger -> warn('Unable to parse scan results JSON');
-        return [];
-    }
+        $decoded_data = [];
+    };
+
+    return $decoded_data;
 }
 
 sub _resolve_dns {
@@ -382,11 +395,11 @@ sub _resolve_dns {
         if ($query) {
             for my $answer ($query -> answer) {
                 if ($answer -> type eq 'A') {
-                    push(@ips, $answer -> address);
+                    push @ips, $answer -> address;
                 }
 
                 if ($answer -> type eq 'AAAA') {
-                    push(@ips, $answer -> address);
+                    push @ips, $answer -> address;
                 }
             }
         }
@@ -403,7 +416,7 @@ sub _resolve_dns {
     return \@ips;
 }
 
-sub _build_name_servers {
+sub build_name_servers {
     my ($self) = @_;
 
     return [
@@ -418,7 +431,7 @@ sub _build_name_servers {
     ];
 }
 
-sub _build_scan_results_file {
+sub build_scan_results_file {
     my ($self) = @_;
     my $handle = File::Temp -> new();
 
@@ -432,26 +445,37 @@ sub _build_binary {
         $binary = 'masscan';
     }
 
-    my $sep = ':';
-    if ($^O =~ /Win/) {
-        $sep = ';';
+    my $sep = q{:};
+    if ($OSNAME =~ m{Win}xms) {
+        $sep = q{;};
     }
 
-    for my $dir (split($sep, $ENV{PATH})) {
-        opendir(my $dh, $dir) || next;
-        my @files = (readdir($dh));
-        closedir($dh);
+    for my $dir (split $sep, $ENV{PATH}) {
+        my $dh;
+        if (!opendir $dh, $dir) {
+            next;
+        }
+        my @files = readdir $dh;
+        if (!closedir $dh) {
+            next;
+        }
 
         for my $file (@files) {
-            next unless $file =~ m{^$binary(?:.exe)?$};
+            if ($file !~ m{^$binary(?:[.]exe)?$}xms) {
+                next;
+            }
             my $path = File::Spec -> catfile($dir, $file);
-            next unless -r $path && (-x _ || -l _);
+            if (!(-r $path && (-x _ || -l _))) {
+                next;
+            }
             return $path;
         }
     }
+
+    return;
 }
 
-sub _build_logger {
+sub build_logger {
     my ($self) = @_;
     my $conf = _build_log_conf('WARN');
 
@@ -467,7 +491,7 @@ sub _build_logger {
 sub _build_log_conf {
     my ($level) = @_;
 
-    return <<~__LOG_CONF__
+    return <<~'__LOG_CONF__'
 log4perl.logger                         = TRACE, Screen
 log4perl.appender.Screen                = Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors
 log4perl.appender.Screen.Threshold      = $level
@@ -485,6 +509,7 @@ __LOG_CONF__
 }
 
 __PACKAGE__ -> meta -> make_immutable;
+1;
 
 __END__
 
@@ -541,7 +566,12 @@ version 20200329.150259
         $res = $mas -> scan_results;
     }
 
-=head1 METHODS
+=head1 DESCRIPTION
+
+Masscan::Scanner provides an object-oriented interface for building,
+running, and parsing masscan scans from Perl code.
+
+=head1 SUBROUTINES/METHODS
 
 =head2 add_host
 
@@ -690,11 +720,37 @@ version 20200329.150259
                        }
     };
 
+=head1 DIAGNOSTICS
+
+The module logs warnings and errors through Log::Log4perl. Typical
+diagnostics include invalid host or port input, missing masscan binary,
+and JSON parsing failures in scan output.
+
+=head1 CONFIGURATION AND ENVIRONMENT
+
+The module discovers the masscan binary from the `PATH` environment
+variable when not explicitly set. DNS lookups use configurable name
+servers through the `name_servers` attribute.
+
+=head1 DEPENDENCIES
+
+Core dependencies include Moose, JSON, Net::DNS, Data::Validate::IP,
+Data::Validate::Domain, Try::Catch, and Log::Log4perl.
+
+=head1 INCOMPATIBILITIES
+
+No known incompatibilities are documented.
+
+=head1 BUGS AND LIMITATIONS
+
+Scan execution depends on the external masscan binary and required
+execution privileges in the runtime environment.
+
 =head1 AUTHOR
 
 Heitor Gouvea <hgouvea@cpan.org>
 
-=head1 COPYRIGHT AND LICENSE
+=head1 LICENSE AND COPYRIGHT
 
 This software is copyright (c) 2026 by Heitor Gouvea.
 
