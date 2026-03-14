@@ -2,7 +2,7 @@ requires 'perl', '5.020000';
 
 requires 'Data::Validate::Domain', '0.15';
 requires 'Data::Validate::IP';
-requires 'JSON';
+requires 'JSON', '4.10';
 requires 'Log::Log4perl';
 requires 'Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors';
 requires 'Log::Log4perl::Layout::PatternLayout::Multiline';
