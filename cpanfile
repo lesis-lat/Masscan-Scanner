@@ -13,4 +13,4 @@ requires 'MooseX::Types::Moose';
 requires 'MooseX::Types::Structured', '0.36';
 requires 'namespace::autoclean';
 requires 'Net::DNS';
-requires 'Try::Catch';
+requires 'Try::Catch', 'v1.1.0';
