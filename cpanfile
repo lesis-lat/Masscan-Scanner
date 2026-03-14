@@ -4,7 +4,7 @@ requires 'Data::Validate::Domain';
 requires 'Data::Validate::IP';
 requires 'JSON';
 requires 'Log::Log4perl';
-requires 'Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors';
+requires 'Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors', '0.117';
 requires 'Log::Log4perl::Layout::PatternLayout::Multiline';
 requires 'Moose';
 requires 'MooseX::AttributeShortcuts';
