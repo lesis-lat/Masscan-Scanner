@@ -477,7 +477,7 @@ sub _build_binary {
 
 sub build_logger {
     my ($self) = @_;
-    my $conf = _build_log_conf('WARN');
+    my $conf = _build_log_conf('OFF');
 
     if ($self -> verbose) {
         $conf = _build_log_conf('DEBUG');
@@ -491,7 +491,7 @@ sub build_logger {
 sub _build_log_conf {
     my ($level) = @_;
 
-    return <<~'__LOG_CONF__'
+    return <<"__LOG_CONF__";
 log4perl.logger                         = TRACE, Screen
 log4perl.appender.Screen                = Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors
 log4perl.appender.Screen.Threshold      = $level
