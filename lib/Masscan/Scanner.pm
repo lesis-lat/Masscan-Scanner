@@ -22,7 +22,7 @@ use Try::Catch;
 use Data::Dumper;
 use namespace::autoclean;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 has hosts => (
     is       => 'rw',
@@ -692,11 +692,11 @@ version 20200329.150259
 
 =head1 AUTHOR
 
-Sarah Fuller <averna@cpan.org>
+Heitor Gouvea <hgouvea@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2020 by Sarah Fuller.
+This software is copyright (c) 2026 by Heitor Gouvea.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

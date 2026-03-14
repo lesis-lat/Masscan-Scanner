@@ -12,7 +12,7 @@
 #   MakeMaker Parameters:
 
 #     ABSTRACT => q[Perl bindings for masscan scanning]
-#     AUTHOR => [q[Sarah Fuller <averna@cpan.org>, Maintained by Heitor Gouvea <hgouvea@cpan.org>]]
+#     AUTHOR => [q[Heitor Gouvea <hgouvea@cpan.org>]]
 #     BUILD_REQUIRES => {  }
 #     CONFIGURE_REQUIRES => {  }
 #     LICENSE => q[perl]
@@ -58,11 +58,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = Masscan::Scanner
 NAME_SYM = Masscan_Scanner
-VERSION = 0.02
+VERSION = 0.03
 VERSION_MACRO = VERSION
-VERSION_SYM = 0_02
+VERSION_SYM = 0_03
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 0.02
+XS_VERSION = 0.03
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -76,46 +76,44 @@ MAN3EXT = 3pm
 MAN1SECTION = 1
 MAN3SECTION = 3
 INSTALLDIRS = site
+INSTALL_BASE = /Users/htrgouvea/perl5
 DESTDIR = 
-PREFIX = $(SITEPREFIX)
-PERLPREFIX = /usr
-SITEPREFIX = /usr
-VENDORPREFIX = /usr/local
-INSTALLPRIVLIB = /Library/Perl/Updates/5.34.1
+PREFIX = $(INSTALL_BASE)
+INSTALLPRIVLIB = $(INSTALL_BASE)/lib/perl5
 DESTINSTALLPRIVLIB = $(DESTDIR)$(INSTALLPRIVLIB)
-INSTALLSITELIB = /Library/Perl/5.34
+INSTALLSITELIB = $(INSTALL_BASE)/lib/perl5
 DESTINSTALLSITELIB = $(DESTDIR)$(INSTALLSITELIB)
-INSTALLVENDORLIB = /Network/Library/Perl/5.34
+INSTALLVENDORLIB = $(INSTALL_BASE)/lib/perl5
 DESTINSTALLVENDORLIB = $(DESTDIR)$(INSTALLVENDORLIB)
-INSTALLARCHLIB = /Library/Perl/Updates/5.34.1/darwin-thread-multi-2level
+INSTALLARCHLIB = $(INSTALL_BASE)/lib/perl5/darwin-thread-multi-2level
 DESTINSTALLARCHLIB = $(DESTDIR)$(INSTALLARCHLIB)
-INSTALLSITEARCH = /Library/Perl/5.34/darwin-thread-multi-2level
+INSTALLSITEARCH = $(INSTALL_BASE)/lib/perl5/darwin-thread-multi-2level
 DESTINSTALLSITEARCH = $(DESTDIR)$(INSTALLSITEARCH)
-INSTALLVENDORARCH = /Network/Library/Perl/5.34/darwin-thread-multi-2level
+INSTALLVENDORARCH = $(INSTALL_BASE)/lib/perl5/darwin-thread-multi-2level
 DESTINSTALLVENDORARCH = $(DESTDIR)$(INSTALLVENDORARCH)
-INSTALLBIN = /usr/bin
+INSTALLBIN = $(INSTALL_BASE)/bin
 DESTINSTALLBIN = $(DESTDIR)$(INSTALLBIN)
-INSTALLSITEBIN = /usr/local/bin
+INSTALLSITEBIN = $(INSTALL_BASE)/bin
 DESTINSTALLSITEBIN = $(DESTDIR)$(INSTALLSITEBIN)
-INSTALLVENDORBIN = /usr/local/bin
+INSTALLVENDORBIN = $(INSTALL_BASE)/bin
 DESTINSTALLVENDORBIN = $(DESTDIR)$(INSTALLVENDORBIN)
-INSTALLSCRIPT = /usr/bin
+INSTALLSCRIPT = $(INSTALL_BASE)/bin
 DESTINSTALLSCRIPT = $(DESTDIR)$(INSTALLSCRIPT)
-INSTALLSITESCRIPT = /usr/local/bin
+INSTALLSITESCRIPT = $(INSTALL_BASE)/bin
 DESTINSTALLSITESCRIPT = $(DESTDIR)$(INSTALLSITESCRIPT)
-INSTALLVENDORSCRIPT = /usr/local/bin
+INSTALLVENDORSCRIPT = $(INSTALL_BASE)/bin
 DESTINSTALLVENDORSCRIPT = $(DESTDIR)$(INSTALLVENDORSCRIPT)
-INSTALLMAN1DIR = /usr/share/man/man1
+INSTALLMAN1DIR = $(INSTALL_BASE)/man/man1
 DESTINSTALLMAN1DIR = $(DESTDIR)$(INSTALLMAN1DIR)
-INSTALLSITEMAN1DIR = /usr/local/share/man/man1
+INSTALLSITEMAN1DIR = $(INSTALL_BASE)/man/man1
 DESTINSTALLSITEMAN1DIR = $(DESTDIR)$(INSTALLSITEMAN1DIR)
-INSTALLVENDORMAN1DIR = /usr/local/share/man/man1
+INSTALLVENDORMAN1DIR = $(INSTALL_BASE)/man/man1
 DESTINSTALLVENDORMAN1DIR = $(DESTDIR)$(INSTALLVENDORMAN1DIR)
-INSTALLMAN3DIR = /usr/share/man/man3
+INSTALLMAN3DIR = $(INSTALL_BASE)/man/man3
 DESTINSTALLMAN3DIR = $(DESTDIR)$(INSTALLMAN3DIR)
-INSTALLSITEMAN3DIR = /usr/local/share/man/man3
+INSTALLSITEMAN3DIR = $(INSTALL_BASE)/man/man3
 DESTINSTALLSITEMAN3DIR = $(DESTDIR)$(INSTALLSITEMAN3DIR)
-INSTALLVENDORMAN3DIR = /usr/local/share/man/man3
+INSTALLVENDORMAN3DIR = $(INSTALL_BASE)/man/man3
 DESTINSTALLVENDORMAN3DIR = $(DESTDIR)$(INSTALLVENDORMAN3DIR)
 PERL_LIB = /System/Library/Perl/5.34
 PERL_ARCHLIB = /System/Library/Perl/5.34/darwin-thread-multi-2level
@@ -262,7 +260,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = Masscan-Scanner
-DISTVNAME = Masscan-Scanner-0.02
+DISTVNAME = Masscan-Scanner-0.03
 
 
 # --- MakeMaker macro section:
@@ -288,6 +286,7 @@ DISTVNAME = Masscan-Scanner-0.02
 PASTHRU = LIBPERL_A="$(LIBPERL_A)"\
 	LINKTYPE="$(LINKTYPE)"\
 	PREFIX="$(PREFIX)"\
+	INSTALL_BASE="$(INSTALL_BASE)"\
 	PASTHRU_DEFINE='$(DEFINE) $(PASTHRU_DEFINE)'\
 	PASTHRU_INC='$(INC) $(PASTHRU_INC)'
 
@@ -488,7 +487,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '---' > META_new.yml
 	$(NOECHO) $(ECHO) 'abstract: '\''Perl bindings for masscan scanning'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'author:' >> META_new.yml
-	$(NOECHO) $(ECHO) '  - '\''Sarah Fuller <averna@cpan.org>, Maintained by Heitor Gouvea <hgouvea@cpan.org>'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  - '\''Heitor Gouvea <hgouvea@cpan.org>'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'build_requires:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  ExtUtils::MakeMaker: '\''0'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'configure_requires:' >> META_new.yml
@@ -512,14 +511,14 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '  MooseX::Types::Moose: '\''0'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) '  MooseX::Types::Structured: '\''0'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Net::DNS: '\''0'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version: '\''0.02'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version: '\''0.03'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'x_serialization_backend: '\''CPAN::Meta::YAML version 0.018'\''' >> META_new.yml
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
 	$(NOECHO) $(ECHO) Generating META.json
 	$(NOECHO) $(ECHO) '{' > META_new.json
 	$(NOECHO) $(ECHO) '   "abstract" : "Perl bindings for masscan scanning",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "author" : [' >> META_new.json
-	$(NOECHO) $(ECHO) '      "Sarah Fuller <averna@cpan.org>, Maintained by Heitor Gouvea <hgouvea@cpan.org>"' >> META_new.json
+	$(NOECHO) $(ECHO) '      "Heitor Gouvea <hgouvea@cpan.org>"' >> META_new.json
 	$(NOECHO) $(ECHO) '   ],' >> META_new.json
 	$(NOECHO) $(ECHO) '   "dynamic_config" : 1,' >> META_new.json
 	$(NOECHO) $(ECHO) '   "generated_by" : "ExtUtils::MakeMaker version 7.62, CPAN::Meta::Converter version 2.150010",' >> META_new.json
@@ -561,8 +560,8 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
 	$(NOECHO) $(ECHO) '   "release_status" : "stable",' >> META_new.json
-	$(NOECHO) $(ECHO) '   "version" : "0.02",' >> META_new.json
-	$(NOECHO) $(ECHO) '   "x_serialization_backend" : "JSON::PP version 4.16"' >> META_new.json
+	$(NOECHO) $(ECHO) '   "version" : "0.03",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "x_serialization_backend" : "JSON::PP version 4.06"' >> META_new.json
 	$(NOECHO) $(ECHO) '}' >> META_new.json
 	-$(NOECHO) $(MV) META_new.json $(DISTVNAME)/META.json
 
@@ -865,9 +864,9 @@ testdb_static test_static :: subdirs-test_static
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Masscan-Scanner" VERSION="0.02">' > Masscan-Scanner.ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Masscan-Scanner" VERSION="0.03">' > Masscan-Scanner.ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>Perl bindings for masscan scanning</ABSTRACT>' >> Masscan-Scanner.ppd
-	$(NOECHO) $(ECHO) '    <AUTHOR>Sarah Fuller &lt;averna@cpan.org&gt;, Maintained by Heitor Gouvea &lt;hgouvea@cpan.org&gt;</AUTHOR>' >> Masscan-Scanner.ppd
+	$(NOECHO) $(ECHO) '    <AUTHOR>Heitor Gouvea &lt;hgouvea@cpan.org&gt;</AUTHOR>' >> Masscan-Scanner.ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> Masscan-Scanner.ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="JSON::" />' >> Masscan-Scanner.ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Moose::" />' >> Masscan-Scanner.ppd

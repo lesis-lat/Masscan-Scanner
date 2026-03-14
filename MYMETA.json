@@ -1,7 +1,7 @@
 {
    "abstract" : "Perl bindings for masscan scanning",
    "author" : [
-      "Sarah Fuller <averna@cpan.org>, Maintained by Heitor Gouvea <hgouvea@cpan.org>"
+      "Heitor Gouvea <hgouvea@cpan.org>"
    ],
    "dynamic_config" : 0,
    "generated_by" : "ExtUtils::MakeMaker version 7.62, CPAN::Meta::Converter version 2.150010",
@@ -43,6 +43,6 @@
       }
    },
    "release_status" : "stable",
-   "version" : "0.02",
-   "x_serialization_backend" : "JSON::PP version 4.16"
+   "version" : "0.03",
+   "x_serialization_backend" : "JSON::PP version 4.06"
 }

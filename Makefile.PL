@@ -6,8 +6,7 @@ WriteMakefile(
     NAME         => 'Masscan::Scanner',
     VERSION_FROM => 'lib/Masscan/Scanner.pm',
     ABSTRACT     => 'Perl bindings for masscan scanning',
-    AUTHOR       =>
-        'Sarah Fuller <averna@cpan.org>, Maintained by Heitor Gouvea <hgouvea@cpan.org>',
+    AUTHOR       => 'Heitor Gouvea <hgouvea@cpan.org>',
     LICENSE      => 'perl',
     PREREQ_PM    => {
         'Moose'                      => 0,
