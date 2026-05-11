@@ -24,7 +24,7 @@ use Try::Catch;
 use Data::Dumper;
 use namespace::autoclean;
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 has hosts => (
     is       => 'rw',

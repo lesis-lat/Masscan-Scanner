@@ -1,7 +1,7 @@
 # This Makefile is for the Masscan::Client extension to perl.
 #
 # It was generated automatically by MakeMaker version
-# 7.62 (Revision: 76200) from the contents of
+# 7.76 (Revision: 77600) from the contents of
 # Makefile.PL. Don't edit this file, edit Makefile.PL instead.
 #
 #       ANY CHANGES MADE HERE WILL BE LOST!
@@ -16,8 +16,9 @@
 #     BUILD_REQUIRES => {  }
 #     CONFIGURE_REQUIRES => {  }
 #     LICENSE => q[perl]
+#     MIN_PERL_VERSION => q[5.020000]
 #     NAME => q[Masscan::Client]
-#     PREREQ_PM => { JSON=>q[0], Moose=>q[0], MooseX::AttributeShortcuts=>q[0], MooseX::StrictConstructor=>q[0], MooseX::Types::Moose=>q[0], MooseX::Types::Structured=>q[0], Net::DNS=>q[0] }
+#     PREREQ_PM => { Data::Validate::Domain=>q[0.15], Data::Validate::IP=>q[0.31], JSON=>q[4.11], Log::Log4perl=>q[1.57], Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors=>q[0.117], Log::Log4perl::Layout::PatternLayout::Multiline=>q[1.57], Moose=>q[2.4000], MooseX::AttributeShortcuts=>q[0.037], MooseX::StrictConstructor=>q[0.21], MooseX::Types::Moose=>q[0.51], MooseX::Types::Structured=>q[0.36], Net::DNS=>q[1.54], Try::Catch=>q[v1.1.0], namespace::autoclean=>q[0.31] }
 #     TEST_REQUIRES => {  }
 #     VERSION_FROM => q[lib/Masscan/Client.pm]
 
@@ -26,30 +27,31 @@
 
 # --- MakeMaker const_config section:
 
-# These definitions are from config.sh (via /System/Library/Perl/5.34/darwin-thread-multi-2level/Config.pm).
+# These definitions are from config.sh (via /usr/local/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level/Config.pm).
 # They may have been overridden via Makefile.PL or on the command line.
 AR = ar
 CC = cc
 CCCDLFLAGS =  
 CCDLFLAGS =  
+CPPRUN = cc  -E
 DLEXT = bundle
 DLSRC = dl_dlopen.xs
 EXE_EXT = 
 FULL_AR = /usr/bin/ar
 LD = cc
-LDDLFLAGS =  -bundle -undefined dynamic_lookup -fstack-protector-strong
-LDFLAGS =  -fstack-protector-strong
+LDDLFLAGS = -bundle -undefined dynamic_lookup -L/usr/local/lib -fstack-protector-strong
+LDFLAGS =  -fstack-protector-strong -L/usr/local/lib
 LIBC = 
 LIB_EXT = .a
 OBJ_EXT = .o
 OSNAME = darwin
-OSVERS = 25.0
+OSVERS = 23.6.0
 RANLIB = ranlib
-SITELIBEXP = /Library/Perl/5.34
-SITEARCHEXP = /Library/Perl/5.34/darwin-thread-multi-2level
+SITELIBEXP = /usr/local/opt/perl/lib/perl5/site_perl/5.42
+SITEARCHEXP = /usr/local/opt/perl/lib/perl5/site_perl/5.42/darwin-thread-multi-2level
 SO = dylib
-VENDORARCHEXP = /Network/Library/Perl/5.34/darwin-thread-multi-2level
-VENDORLIBEXP = /Network/Library/Perl/5.34
+VENDORARCHEXP = /usr/local/lib/perl5/vendor_perl/5.42/darwin-thread-multi-2level
+VENDORLIBEXP = /usr/local/lib/perl5/vendor_perl/5.42
 
 
 # --- MakeMaker constants section:
@@ -58,11 +60,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = Masscan::Client
 NAME_SYM = Masscan_Client
-VERSION = 0.01
+VERSION = 0.02
 VERSION_MACRO = VERSION
-VERSION_SYM = 0_01
+VERSION_SYM = 0_02
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 0.01
+XS_VERSION = 0.02
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -72,7 +74,7 @@ INST_LIB = blib/lib
 INST_MAN1DIR = blib/man1
 INST_MAN3DIR = blib/man3
 MAN1EXT = 1
-MAN3EXT = 3pm
+MAN3EXT = 3
 MAN1SECTION = 1
 MAN3SECTION = 3
 INSTALLDIRS = site
@@ -115,18 +117,16 @@ INSTALLSITEMAN3DIR = $(INSTALL_BASE)/man/man3
 DESTINSTALLSITEMAN3DIR = $(DESTDIR)$(INSTALLSITEMAN3DIR)
 INSTALLVENDORMAN3DIR = $(INSTALL_BASE)/man/man3
 DESTINSTALLVENDORMAN3DIR = $(DESTDIR)$(INSTALLVENDORMAN3DIR)
-PERL_LIB = /System/Library/Perl/5.34
-PERL_ARCHLIB = /System/Library/Perl/5.34/darwin-thread-multi-2level
-PERL_ARCHLIBDEP = /System/Library/Perl/5.34/darwin-thread-multi-2level
+PERL_LIB = /usr/local/opt/perl/lib/perl5/5.42
+PERL_ARCHLIB = /usr/local/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level
 LIBPERL_A = libperl.a
 FIRST_MAKEFILE = Makefile
 MAKEFILE_OLD = Makefile.old
 MAKE_APERL_FILE = Makefile.aperl
 PERLMAINCC = $(CC)
-PERL_INC = /System/Library/Perl/5.34/darwin-thread-multi-2level/CORE
-PERL_INCDEP = /System/Library/Perl/5.34/darwin-thread-multi-2level/CORE
-PERL = "/usr/bin/perl"
-FULLPERL = "/usr/bin/perl"
+PERL_INC = /usr/local/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level/CORE
+PERL = "/usr/local/Cellar/perl/5.42.2/bin/perl"
+FULLPERL = "/usr/local/Cellar/perl/5.42.2/bin/perl"
 ABSPERL = $(PERL)
 PERLRUN = $(PERL)
 FULLPERLRUN = $(FULLPERL)
@@ -139,9 +139,9 @@ PERM_DIR = 755
 PERM_RW = 644
 PERM_RWX = 755
 
-MAKEMAKER   = /System/Library/Perl/5.34/ExtUtils/MakeMaker.pm
-MM_VERSION  = 7.62
-MM_REVISION = 76200
+MAKEMAKER   = /usr/local/opt/perl/lib/perl5/5.42/ExtUtils/MakeMaker.pm
+MM_VERSION  = 7.76
+MM_REVISION = 77600
 
 # FULLEXT = Pathname for extension directory (eg Foo/Bar/Oracle).
 # BASEEXT = Basename part of FULLEXT. May be just equal FULLEXT. (eg Oracle)
@@ -166,12 +166,6 @@ H_FILES  =
 MAN1PODS = 
 MAN3PODS = lib/Masscan/Client.pm
 
-SDKROOT := $(shell xcrun --show-sdk-path)
-PERL_SYSROOT = $(SDKROOT)
-
-# Where is the Config information that we are using/depend on
-CONFIGDEP = $(PERL_ARCHLIBDEP)$(DFSEP)Config.pm $(PERL_SYSROOT)$(PERL_INCDEP)$(DFSEP)config.h
-
 # Where to build things
 INST_LIBDIR      = $(INST_LIB)/Masscan
 INST_ARCHLIBDIR  = $(INST_ARCHLIB)/Masscan
@@ -186,15 +180,23 @@ INST_BOOT        =
 # Extra linker info
 EXPORT_LIST        = 
 PERL_ARCHIVE       = 
-PERL_ARCHIVEDEP    = 
 PERL_ARCHIVE_AFTER = 
 
 
 TO_INST_PM = lib/Masscan/Client.pm
+PERL_ARCHLIBDEP = /usr/local/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level
+PERL_INCDEP = /usr/local/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level/CORE
+
+
+# Dependencies info
+PERL_ARCHIVEDEP    = 
+
+# Where is the Config information that we are using/depend on
+CONFIGDEP = $(PERL_ARCHLIBDEP)$(DFSEP)Config.pm $(PERL_INCDEP)$(DFSEP)config.h
 
 
 # --- MakeMaker platform_constants section:
-MM_Unix_VERSION = 7.62
+MM_Unix_VERSION = 7.76
 PERL_MALLOC_DEF = -DPERL_EXTMALLOC_DEF -Dmalloc=Perl_malloc -Dfree=Perl_mfree -Drealloc=Perl_realloc -Dcalloc=Perl_calloc
 
 
@@ -260,7 +262,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = Masscan-Client
-DISTVNAME = Masscan-Client-0.01
+DISTVNAME = Masscan-Client-0.02
 
 
 # --- MakeMaker macro section:
@@ -493,7 +495,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) 'configure_requires:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  ExtUtils::MakeMaker: '\''0'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'dynamic_config: 1' >> META_new.yml
-	$(NOECHO) $(ECHO) 'generated_by: '\''ExtUtils::MakeMaker version 7.62, CPAN::Meta::Converter version 2.150010'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'generated_by: '\''ExtUtils::MakeMaker version 7.76, CPAN::Meta::Converter version 2.150010'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'license: perl' >> META_new.yml
 	$(NOECHO) $(ECHO) 'meta-spec:' >> META_new.yml
 	$(NOECHO) $(ECHO) '  url: http://module-build.sourceforge.net/META-spec-v1.4.html' >> META_new.yml
@@ -504,15 +506,23 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '    - t' >> META_new.yml
 	$(NOECHO) $(ECHO) '    - inc' >> META_new.yml
 	$(NOECHO) $(ECHO) 'requires:' >> META_new.yml
-	$(NOECHO) $(ECHO) '  JSON: '\''0'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) '  Moose: '\''0'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) '  MooseX::AttributeShortcuts: '\''0'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) '  MooseX::StrictConstructor: '\''0'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) '  MooseX::Types::Moose: '\''0'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) '  MooseX::Types::Structured: '\''0'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) '  Net::DNS: '\''0'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version: '\''0.01'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) 'x_serialization_backend: '\''CPAN::Meta::YAML version 0.018'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Data::Validate::Domain: '\''0.15'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Data::Validate::IP: '\''0.31'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  JSON: '\''4.11'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Log::Log4perl: '\''1.57'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors: '\''0.117'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Log::Log4perl::Layout::PatternLayout::Multiline: '\''1.57'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Moose: '\''2.4000'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  MooseX::AttributeShortcuts: '\''0.037'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  MooseX::StrictConstructor: '\''0.21'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  MooseX::Types::Moose: '\''0.51'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  MooseX::Types::Structured: '\''0.36'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Net::DNS: '\''1.54'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  Try::Catch: v1.1.0' >> META_new.yml
+	$(NOECHO) $(ECHO) '  namespace::autoclean: '\''0.31'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) '  perl: '\''5.020000'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version: '\''0.02'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'x_serialization_backend: '\''CPAN::Meta::YAML version 0.020'\''' >> META_new.yml
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
 	$(NOECHO) $(ECHO) Generating META.json
 	$(NOECHO) $(ECHO) '{' > META_new.json
@@ -521,7 +531,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      "Heitor Gouvea <hgouvea@cpan.org>"' >> META_new.json
 	$(NOECHO) $(ECHO) '   ],' >> META_new.json
 	$(NOECHO) $(ECHO) '   "dynamic_config" : 1,' >> META_new.json
-	$(NOECHO) $(ECHO) '   "generated_by" : "ExtUtils::MakeMaker version 7.62, CPAN::Meta::Converter version 2.150010",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "generated_by" : "ExtUtils::MakeMaker version 7.76, CPAN::Meta::Converter version 2.150010",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "license" : [' >> META_new.json
 	$(NOECHO) $(ECHO) '      "perl_5"' >> META_new.json
 	$(NOECHO) $(ECHO) '   ],' >> META_new.json
@@ -549,19 +559,27 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      },' >> META_new.json
 	$(NOECHO) $(ECHO) '      "runtime" : {' >> META_new.json
 	$(NOECHO) $(ECHO) '         "requires" : {' >> META_new.json
-	$(NOECHO) $(ECHO) '            "JSON" : "0",' >> META_new.json
-	$(NOECHO) $(ECHO) '            "Moose" : "0",' >> META_new.json
-	$(NOECHO) $(ECHO) '            "MooseX::AttributeShortcuts" : "0",' >> META_new.json
-	$(NOECHO) $(ECHO) '            "MooseX::StrictConstructor" : "0",' >> META_new.json
-	$(NOECHO) $(ECHO) '            "MooseX::Types::Moose" : "0",' >> META_new.json
-	$(NOECHO) $(ECHO) '            "MooseX::Types::Structured" : "0",' >> META_new.json
-	$(NOECHO) $(ECHO) '            "Net::DNS" : "0"' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Data::Validate::Domain" : "0.15",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Data::Validate::IP" : "0.31",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "JSON" : "4.11",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Log::Log4perl" : "1.57",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors" : "0.117",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Log::Log4perl::Layout::PatternLayout::Multiline" : "1.57",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Moose" : "2.4000",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "MooseX::AttributeShortcuts" : "0.037",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "MooseX::StrictConstructor" : "0.21",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "MooseX::Types::Moose" : "0.51",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "MooseX::Types::Structured" : "0.36",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Net::DNS" : "1.54",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "Try::Catch" : "v1.1.0",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "namespace::autoclean" : "0.31",' >> META_new.json
+	$(NOECHO) $(ECHO) '            "perl" : "5.020000"' >> META_new.json
 	$(NOECHO) $(ECHO) '         }' >> META_new.json
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
 	$(NOECHO) $(ECHO) '   "release_status" : "stable",' >> META_new.json
-	$(NOECHO) $(ECHO) '   "version" : "0.01",' >> META_new.json
-	$(NOECHO) $(ECHO) '   "x_serialization_backend" : "JSON::PP version 4.06"' >> META_new.json
+	$(NOECHO) $(ECHO) '   "version" : "0.02",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "x_serialization_backend" : "JSON::PP version 4.16"' >> META_new.json
 	$(NOECHO) $(ECHO) '}' >> META_new.json
 	-$(NOECHO) $(MV) META_new.json $(DISTVNAME)/META.json
 
@@ -818,8 +836,8 @@ $(FIRST_MAKEFILE) : Makefile.PL $(CONFIGDEP)
 
 # --- MakeMaker makeaperl section ---
 MAP_TARGET    = perl
-FULLPERL      = "/usr/bin/perl"
-MAP_PERLINC   = "-Iblib/arch" "-Iblib/lib" "-I/System/Library/Perl/5.34/darwin-thread-multi-2level" "-I/System/Library/Perl/5.34"
+FULLPERL      = "/usr/local/Cellar/perl/5.42.2/bin/perl"
+MAP_PERLINC   = "-Iblib/arch" "-Iblib/lib" "-I/usr/local/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level" "-I/usr/local/opt/perl/lib/perl5/5.42"
 
 $(MAP_TARGET) :: $(MAKE_APERL_FILE)
 	$(MAKE) $(USEMAKEFILE) $(MAKE_APERL_FILE) $@
@@ -864,18 +882,26 @@ testdb_static test_static :: subdirs-test_static
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Masscan-Client" VERSION="0.01">' > Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Masscan-Client" VERSION="0.02">' > Masscan-Client.ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>Perl bindings for masscan scanning</ABSTRACT>' >> Masscan-Client.ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Heitor Gouvea &lt;hgouvea@cpan.org&gt;</AUTHOR>' >> Masscan-Client.ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> Masscan-Client.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="JSON::" />' >> Masscan-Client.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Moose::" />' >> Masscan-Client.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::AttributeShortcuts" />' >> Masscan-Client.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::StrictConstructor" />' >> Masscan-Client.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::Types::Moose" />' >> Masscan-Client.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::Types::Structured" />' >> Masscan-Client.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Net::DNS" />' >> Masscan-Client.ppd
-	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="darwin-thread-multi-2level-5.34" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <PERLCORE VERSION="5,020000,0,0" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Data::Validate::Domain" VERSION="0.15" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Data::Validate::IP" VERSION="0.31" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="JSON::" VERSION="4.11" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Log::Log4perl" VERSION="1.57" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors" VERSION="0.117" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Log::Log4perl::Layout::PatternLayout::Multiline" VERSION="1.57" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Moose::" VERSION="2.4000" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::AttributeShortcuts" VERSION="0.037" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::StrictConstructor" VERSION="0.21" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::Types::Moose" VERSION="0.51" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::Types::Structured" VERSION="0.36" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Net::DNS" VERSION="1.54" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Try::Catch" VERSION="v1.1.0" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <REQUIRE NAME="namespace::autoclean" VERSION="0.31" />' >> Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '        <ARCHITECTURE NAME="darwin-thread-multi-2level-5.42" />' >> Masscan-Client.ppd
 	$(NOECHO) $(ECHO) '        <CODEBASE HREF="" />' >> Masscan-Client.ppd
 	$(NOECHO) $(ECHO) '    </IMPLEMENTATION>' >> Masscan-Client.ppd
 	$(NOECHO) $(ECHO) '</SOFTPKG>' >> Masscan-Client.ppd
@@ -884,7 +910,11 @@ ppd :
 # --- MakeMaker pm_to_blib section:
 
 pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
-	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', q[$(PM_FILTER)], '\''$(PERM_DIR)'\'')' -- \
+	$(NOECHO) $(ABSPERLRUN) -MExtUtils::Install -e '$$i=0; $$n=$$#ARGV; $$i++ until $$i > $$n or $$ARGV[$$i] eq q{--};' \
+	  -e 'die q{Failed to find -- in }.join(q{|},@ARGV) if $$i > $$n;' \
+	  -e '@parts=splice @ARGV,0,$$i+1;' \
+	  -e 'pop @parts; $$filter=join q{ }, map qq{"$$_"}, @parts;' \
+	  -e 'pm_to_blib({@ARGV}, '\''$(INST_LIB)/auto'\'', $$filter, '\''$(PERM_DIR)'\'')' -- $(PM_FILTER) -- \
 	  'lib/Masscan/Client.pm' 'blib/lib/Masscan/Client.pm' 
 	$(NOECHO) $(TOUCH) pm_to_blib
 
@@ -893,6 +923,12 @@ pm_to_blib : $(FIRST_MAKEFILE) $(TO_INST_PM)
 
 # here so even if top_targets is overridden, these will still be defined
 # gmake will silently still work if any are .PHONY-ed but nmake won't
+
+test_static ::
+	$(NOECHO) $(NOOP)
+
+test_dynamic ::
+	$(NOECHO) $(NOOP)
 
 static ::
 	$(NOECHO) $(NOOP)
