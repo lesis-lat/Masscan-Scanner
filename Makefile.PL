@@ -2,7 +2,7 @@ use strict;
 use warnings;
 use ExtUtils::MakeMaker;
 
-our $VERSION = '0.02';
+our $VERSION = '0.21';
 
 WriteMakefile(
     NAME         => 'Masscan::Client',
@@ -17,7 +17,6 @@ WriteMakefile(
         'JSON'                       => '4.11',
         'Log::Log4perl'              => '1.57',
         'Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors' => '0.117',
-        'Log::Log4perl::Layout::PatternLayout::Multiline'             => '1.57',
         'Moose'                      => '2.4000',
         'MooseX::AttributeShortcuts' => '0.037',
         'MooseX::StrictConstructor'  => '0.21',

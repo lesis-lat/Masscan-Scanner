@@ -21,7 +21,7 @@ cpanm Masscan::Client
 From a local release tarball:
 
 ```bash
-cpanm ./Masscan-Client-0.02.tar.gz
+cpanm ./Masscan-Client-0.21.tar.gz
 ```
 
 ## Release To CPAN

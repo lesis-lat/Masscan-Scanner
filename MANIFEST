@@ -1,6 +1,9 @@
+.perlcriticrc
+cpanfile
 lib/Masscan/Client.pm
 LICENSE
 Makefile.PL
-cpanfile
 MANIFEST			This list of files
+MANIFEST.SKIP
 README.md
+RELEASING.md

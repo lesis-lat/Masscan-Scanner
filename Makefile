@@ -18,7 +18,7 @@
 #     LICENSE => q[perl]
 #     MIN_PERL_VERSION => q[5.020000]
 #     NAME => q[Masscan::Client]
-#     PREREQ_PM => { Data::Validate::Domain=>q[0.15], Data::Validate::IP=>q[0.31], JSON=>q[4.11], Log::Log4perl=>q[1.57], Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors=>q[0.117], Log::Log4perl::Layout::PatternLayout::Multiline=>q[1.57], Moose=>q[2.4000], MooseX::AttributeShortcuts=>q[0.037], MooseX::StrictConstructor=>q[0.21], MooseX::Types::Moose=>q[0.51], MooseX::Types::Structured=>q[0.36], Net::DNS=>q[1.54], Try::Catch=>q[v1.1.0], namespace::autoclean=>q[0.31] }
+#     PREREQ_PM => { Data::Validate::Domain=>q[0.15], Data::Validate::IP=>q[0.31], JSON=>q[4.11], Log::Log4perl=>q[1.57], Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors=>q[0.117], Moose=>q[2.4000], MooseX::AttributeShortcuts=>q[0.037], MooseX::StrictConstructor=>q[0.21], MooseX::Types::Moose=>q[0.51], MooseX::Types::Structured=>q[0.36], Net::DNS=>q[1.54], Try::Catch=>q[v1.1.0], namespace::autoclean=>q[0.31] }
 #     TEST_REQUIRES => {  }
 #     VERSION_FROM => q[lib/Masscan/Client.pm]
 
@@ -27,7 +27,7 @@
 
 # --- MakeMaker const_config section:
 
-# These definitions are from config.sh (via /usr/local/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level/Config.pm).
+# These definitions are from config.sh (via /opt/homebrew/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level/Config.pm).
 # They may have been overridden via Makefile.PL or on the command line.
 AR = ar
 CC = cc
@@ -39,19 +39,19 @@ DLSRC = dl_dlopen.xs
 EXE_EXT = 
 FULL_AR = /usr/bin/ar
 LD = cc
-LDDLFLAGS = -bundle -undefined dynamic_lookup -L/usr/local/lib -fstack-protector-strong
-LDFLAGS =  -fstack-protector-strong -L/usr/local/lib
+LDDLFLAGS = -bundle -undefined dynamic_lookup -fstack-protector-strong
+LDFLAGS =  -fstack-protector-strong
 LIBC = 
 LIB_EXT = .a
 OBJ_EXT = .o
 OSNAME = darwin
-OSVERS = 23.6.0
+OSVERS = 25.4.0
 RANLIB = ranlib
-SITELIBEXP = /usr/local/opt/perl/lib/perl5/site_perl/5.42
-SITEARCHEXP = /usr/local/opt/perl/lib/perl5/site_perl/5.42/darwin-thread-multi-2level
+SITELIBEXP = /opt/homebrew/opt/perl/lib/perl5/site_perl/5.42
+SITEARCHEXP = /opt/homebrew/opt/perl/lib/perl5/site_perl/5.42/darwin-thread-multi-2level
 SO = dylib
-VENDORARCHEXP = /usr/local/lib/perl5/vendor_perl/5.42/darwin-thread-multi-2level
-VENDORLIBEXP = /usr/local/lib/perl5/vendor_perl/5.42
+VENDORARCHEXP = /opt/homebrew/lib/perl5/vendor_perl/5.42/darwin-thread-multi-2level
+VENDORLIBEXP = /opt/homebrew/lib/perl5/vendor_perl/5.42
 
 
 # --- MakeMaker constants section:
@@ -60,11 +60,11 @@ DIRFILESEP = /
 DFSEP = $(DIRFILESEP)
 NAME = Masscan::Client
 NAME_SYM = Masscan_Client
-VERSION = 0.02
+VERSION = 0.21
 VERSION_MACRO = VERSION
-VERSION_SYM = 0_02
+VERSION_SYM = 0_21
 DEFINE_VERSION = -D$(VERSION_MACRO)=\"$(VERSION)\"
-XS_VERSION = 0.02
+XS_VERSION = 0.21
 XS_VERSION_MACRO = XS_VERSION
 XS_DEFINE_VERSION = -D$(XS_VERSION_MACRO)=\"$(XS_VERSION)\"
 INST_ARCHLIB = blib/arch
@@ -78,55 +78,57 @@ MAN3EXT = 3
 MAN1SECTION = 1
 MAN3SECTION = 3
 INSTALLDIRS = site
-INSTALL_BASE = /Users/htrgouvea/perl5
 DESTDIR = 
-PREFIX = $(INSTALL_BASE)
-INSTALLPRIVLIB = $(INSTALL_BASE)/lib/perl5
+PREFIX = $(SITEPREFIX)
+PERLPREFIX = /opt/homebrew/Cellar/perl/5.42.2
+SITEPREFIX = /opt/homebrew/opt/perl
+VENDORPREFIX = /opt/homebrew
+INSTALLPRIVLIB = /opt/homebrew/Cellar/perl/5.42.2/lib/perl5/5.42
 DESTINSTALLPRIVLIB = $(DESTDIR)$(INSTALLPRIVLIB)
-INSTALLSITELIB = $(INSTALL_BASE)/lib/perl5
+INSTALLSITELIB = /opt/homebrew/Cellar/perl/5.42.2/lib/perl5/site_perl/5.42
 DESTINSTALLSITELIB = $(DESTDIR)$(INSTALLSITELIB)
-INSTALLVENDORLIB = $(INSTALL_BASE)/lib/perl5
+INSTALLVENDORLIB = /opt/homebrew/lib/perl5/vendor_perl/5.42
 DESTINSTALLVENDORLIB = $(DESTDIR)$(INSTALLVENDORLIB)
-INSTALLARCHLIB = $(INSTALL_BASE)/lib/perl5/darwin-thread-multi-2level
+INSTALLARCHLIB = /opt/homebrew/Cellar/perl/5.42.2/lib/perl5/5.42/darwin-thread-multi-2level
 DESTINSTALLARCHLIB = $(DESTDIR)$(INSTALLARCHLIB)
-INSTALLSITEARCH = $(INSTALL_BASE)/lib/perl5/darwin-thread-multi-2level
+INSTALLSITEARCH = /opt/homebrew/Cellar/perl/5.42.2/lib/perl5/site_perl/5.42/darwin-thread-multi-2level
 DESTINSTALLSITEARCH = $(DESTDIR)$(INSTALLSITEARCH)
-INSTALLVENDORARCH = $(INSTALL_BASE)/lib/perl5/darwin-thread-multi-2level
+INSTALLVENDORARCH = /opt/homebrew/lib/perl5/vendor_perl/5.42/darwin-thread-multi-2level
 DESTINSTALLVENDORARCH = $(DESTDIR)$(INSTALLVENDORARCH)
-INSTALLBIN = $(INSTALL_BASE)/bin
+INSTALLBIN = /opt/homebrew/Cellar/perl/5.42.2/bin
 DESTINSTALLBIN = $(DESTDIR)$(INSTALLBIN)
-INSTALLSITEBIN = $(INSTALL_BASE)/bin
+INSTALLSITEBIN = /opt/homebrew/Cellar/perl/5.42.2/bin
 DESTINSTALLSITEBIN = $(DESTDIR)$(INSTALLSITEBIN)
-INSTALLVENDORBIN = $(INSTALL_BASE)/bin
+INSTALLVENDORBIN = /opt/homebrew/bin
 DESTINSTALLVENDORBIN = $(DESTDIR)$(INSTALLVENDORBIN)
-INSTALLSCRIPT = $(INSTALL_BASE)/bin
+INSTALLSCRIPT = /opt/homebrew/Cellar/perl/5.42.2/bin
 DESTINSTALLSCRIPT = $(DESTDIR)$(INSTALLSCRIPT)
-INSTALLSITESCRIPT = $(INSTALL_BASE)/bin
+INSTALLSITESCRIPT = /opt/homebrew/Cellar/perl/5.42.2/bin
 DESTINSTALLSITESCRIPT = $(DESTDIR)$(INSTALLSITESCRIPT)
-INSTALLVENDORSCRIPT = $(INSTALL_BASE)/bin
+INSTALLVENDORSCRIPT = /opt/homebrew/bin
 DESTINSTALLVENDORSCRIPT = $(DESTDIR)$(INSTALLVENDORSCRIPT)
-INSTALLMAN1DIR = $(INSTALL_BASE)/man/man1
+INSTALLMAN1DIR = /opt/homebrew/Cellar/perl/5.42.2/share/man/man1
 DESTINSTALLMAN1DIR = $(DESTDIR)$(INSTALLMAN1DIR)
-INSTALLSITEMAN1DIR = $(INSTALL_BASE)/man/man1
+INSTALLSITEMAN1DIR = /opt/homebrew/Cellar/perl/5.42.2/share/man/man1
 DESTINSTALLSITEMAN1DIR = $(DESTDIR)$(INSTALLSITEMAN1DIR)
-INSTALLVENDORMAN1DIR = $(INSTALL_BASE)/man/man1
+INSTALLVENDORMAN1DIR = /opt/homebrew/share/man/man1
 DESTINSTALLVENDORMAN1DIR = $(DESTDIR)$(INSTALLVENDORMAN1DIR)
-INSTALLMAN3DIR = $(INSTALL_BASE)/man/man3
+INSTALLMAN3DIR = /opt/homebrew/Cellar/perl/5.42.2/share/man/man3
 DESTINSTALLMAN3DIR = $(DESTDIR)$(INSTALLMAN3DIR)
-INSTALLSITEMAN3DIR = $(INSTALL_BASE)/man/man3
+INSTALLSITEMAN3DIR = /opt/homebrew/Cellar/perl/5.42.2/share/man/man3
 DESTINSTALLSITEMAN3DIR = $(DESTDIR)$(INSTALLSITEMAN3DIR)
-INSTALLVENDORMAN3DIR = $(INSTALL_BASE)/man/man3
+INSTALLVENDORMAN3DIR = /opt/homebrew/share/man/man3
 DESTINSTALLVENDORMAN3DIR = $(DESTDIR)$(INSTALLVENDORMAN3DIR)
-PERL_LIB = /usr/local/opt/perl/lib/perl5/5.42
-PERL_ARCHLIB = /usr/local/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level
+PERL_LIB = /opt/homebrew/opt/perl/lib/perl5/5.42
+PERL_ARCHLIB = /opt/homebrew/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level
 LIBPERL_A = libperl.a
 FIRST_MAKEFILE = Makefile
 MAKEFILE_OLD = Makefile.old
 MAKE_APERL_FILE = Makefile.aperl
 PERLMAINCC = $(CC)
-PERL_INC = /usr/local/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level/CORE
-PERL = "/usr/local/Cellar/perl/5.42.2/bin/perl"
-FULLPERL = "/usr/local/Cellar/perl/5.42.2/bin/perl"
+PERL_INC = /opt/homebrew/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level/CORE
+PERL = "/opt/homebrew/Cellar/perl/5.42.2/bin/perl"
+FULLPERL = "/opt/homebrew/Cellar/perl/5.42.2/bin/perl"
 ABSPERL = $(PERL)
 PERLRUN = $(PERL)
 FULLPERLRUN = $(FULLPERL)
@@ -139,7 +141,7 @@ PERM_DIR = 755
 PERM_RW = 644
 PERM_RWX = 755
 
-MAKEMAKER   = /usr/local/opt/perl/lib/perl5/5.42/ExtUtils/MakeMaker.pm
+MAKEMAKER   = /opt/homebrew/opt/perl/lib/perl5/5.42/ExtUtils/MakeMaker.pm
 MM_VERSION  = 7.76
 MM_REVISION = 77600
 
@@ -184,8 +186,8 @@ PERL_ARCHIVE_AFTER =
 
 
 TO_INST_PM = lib/Masscan/Client.pm
-PERL_ARCHLIBDEP = /usr/local/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level
-PERL_INCDEP = /usr/local/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level/CORE
+PERL_ARCHLIBDEP = /opt/homebrew/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level
+PERL_INCDEP = /opt/homebrew/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level/CORE
 
 
 # Dependencies info
@@ -262,7 +264,7 @@ RCS_LABEL = rcs -Nv$(VERSION_SYM): -q
 DIST_CP = best
 DIST_DEFAULT = tardist
 DISTNAME = Masscan-Client
-DISTVNAME = Masscan-Client-0.02
+DISTVNAME = Masscan-Client-0.21
 
 
 # --- MakeMaker macro section:
@@ -288,7 +290,6 @@ DISTVNAME = Masscan-Client-0.02
 PASTHRU = LIBPERL_A="$(LIBPERL_A)"\
 	LINKTYPE="$(LINKTYPE)"\
 	PREFIX="$(PREFIX)"\
-	INSTALL_BASE="$(INSTALL_BASE)"\
 	PASTHRU_DEFINE='$(DEFINE) $(PASTHRU_DEFINE)'\
 	PASTHRU_INC='$(INC) $(PASTHRU_INC)'
 
@@ -511,7 +512,6 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '  JSON: '\''4.11'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Log::Log4perl: '\''1.57'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors: '\''0.117'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) '  Log::Log4perl::Layout::PatternLayout::Multiline: '\''1.57'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) '  Moose: '\''2.4000'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) '  MooseX::AttributeShortcuts: '\''0.037'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) '  MooseX::StrictConstructor: '\''0.21'\''' >> META_new.yml
@@ -521,7 +521,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '  Try::Catch: v1.1.0' >> META_new.yml
 	$(NOECHO) $(ECHO) '  namespace::autoclean: '\''0.31'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) '  perl: '\''5.020000'\''' >> META_new.yml
-	$(NOECHO) $(ECHO) 'version: '\''0.02'\''' >> META_new.yml
+	$(NOECHO) $(ECHO) 'version: '\''0.21'\''' >> META_new.yml
 	$(NOECHO) $(ECHO) 'x_serialization_backend: '\''CPAN::Meta::YAML version 0.020'\''' >> META_new.yml
 	-$(NOECHO) $(MV) META_new.yml $(DISTVNAME)/META.yml
 	$(NOECHO) $(ECHO) Generating META.json
@@ -564,7 +564,6 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '            "JSON" : "4.11",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "Log::Log4perl" : "1.57",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors" : "0.117",' >> META_new.json
-	$(NOECHO) $(ECHO) '            "Log::Log4perl::Layout::PatternLayout::Multiline" : "1.57",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "Moose" : "2.4000",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "MooseX::AttributeShortcuts" : "0.037",' >> META_new.json
 	$(NOECHO) $(ECHO) '            "MooseX::StrictConstructor" : "0.21",' >> META_new.json
@@ -578,7 +577,7 @@ metafile : create_distdir
 	$(NOECHO) $(ECHO) '      }' >> META_new.json
 	$(NOECHO) $(ECHO) '   },' >> META_new.json
 	$(NOECHO) $(ECHO) '   "release_status" : "stable",' >> META_new.json
-	$(NOECHO) $(ECHO) '   "version" : "0.02",' >> META_new.json
+	$(NOECHO) $(ECHO) '   "version" : "0.21",' >> META_new.json
 	$(NOECHO) $(ECHO) '   "x_serialization_backend" : "JSON::PP version 4.16"' >> META_new.json
 	$(NOECHO) $(ECHO) '}' >> META_new.json
 	-$(NOECHO) $(MV) META_new.json $(DISTVNAME)/META.json
@@ -836,8 +835,8 @@ $(FIRST_MAKEFILE) : Makefile.PL $(CONFIGDEP)
 
 # --- MakeMaker makeaperl section ---
 MAP_TARGET    = perl
-FULLPERL      = "/usr/local/Cellar/perl/5.42.2/bin/perl"
-MAP_PERLINC   = "-Iblib/arch" "-Iblib/lib" "-I/usr/local/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level" "-I/usr/local/opt/perl/lib/perl5/5.42"
+FULLPERL      = "/opt/homebrew/Cellar/perl/5.42.2/bin/perl"
+MAP_PERLINC   = "-Iblib/arch" "-Iblib/lib" "-I/opt/homebrew/opt/perl/lib/perl5/5.42/darwin-thread-multi-2level" "-I/opt/homebrew/opt/perl/lib/perl5/5.42"
 
 $(MAP_TARGET) :: $(MAKE_APERL_FILE)
 	$(MAKE) $(USEMAKEFILE) $(MAKE_APERL_FILE) $@
@@ -882,7 +881,7 @@ testdb_static test_static :: subdirs-test_static
 # --- MakeMaker ppd section:
 # Creates a PPD (Perl Package Description) for a binary distribution.
 ppd :
-	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Masscan-Client" VERSION="0.02">' > Masscan-Client.ppd
+	$(NOECHO) $(ECHO) '<SOFTPKG NAME="Masscan-Client" VERSION="0.21">' > Masscan-Client.ppd
 	$(NOECHO) $(ECHO) '    <ABSTRACT>Perl bindings for masscan scanning</ABSTRACT>' >> Masscan-Client.ppd
 	$(NOECHO) $(ECHO) '    <AUTHOR>Heitor Gouvea &lt;hgouvea@cpan.org&gt;</AUTHOR>' >> Masscan-Client.ppd
 	$(NOECHO) $(ECHO) '    <IMPLEMENTATION>' >> Masscan-Client.ppd
@@ -892,7 +891,6 @@ ppd :
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="JSON::" VERSION="4.11" />' >> Masscan-Client.ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Log::Log4perl" VERSION="1.57" />' >> Masscan-Client.ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors" VERSION="0.117" />' >> Masscan-Client.ppd
-	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Log::Log4perl::Layout::PatternLayout::Multiline" VERSION="1.57" />' >> Masscan-Client.ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="Moose::" VERSION="2.4000" />' >> Masscan-Client.ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::AttributeShortcuts" VERSION="0.037" />' >> Masscan-Client.ppd
 	$(NOECHO) $(ECHO) '        <REQUIRE NAME="MooseX::StrictConstructor" VERSION="0.21" />' >> Masscan-Client.ppd

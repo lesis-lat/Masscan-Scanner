@@ -37,7 +37,6 @@
             "JSON" : "4.11",
             "Log::Log4perl" : "1.57",
             "Log::Log4perl::Appender::ScreenColoredLevels::UsingMyColors" : "0.117",
-            "Log::Log4perl::Layout::PatternLayout::Multiline" : "1.57",
             "Moose" : "2.4000",
             "MooseX::AttributeShortcuts" : "0.037",
             "MooseX::StrictConstructor" : "0.21",
@@ -51,6 +50,6 @@
       }
    },
    "release_status" : "stable",
-   "version" : "0.02",
+   "version" : "0.21",
    "x_serialization_backend" : "JSON::PP version 4.16"
 }
