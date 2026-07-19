@@ -11,5 +11,5 @@ requires 'MooseX::StrictConstructor', '0.21';
 requires 'MooseX::Types::Moose', '0.51';
 requires 'MooseX::Types::Structured', '0.36';
 requires 'namespace::autoclean', '0.31';
-requires 'Net::DNS', '1.55';
+requires 'Net::DNS', '1.56';
 requires 'Try::Catch', 'v1.1.0';
